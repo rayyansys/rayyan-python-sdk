@@ -1,0 +1,6 @@
+class InvalidCredentialsError(Exception):
+    ...
+
+
+class RefreshTokenExpiredError(Exception):
+    ...
