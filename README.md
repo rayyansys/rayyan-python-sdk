@@ -4,9 +4,15 @@
 
 - [Rayyan SDK](#rayyan-sdk)
   - [Table of Contents](#table-of-contents)
+  - [Docs](#docs)
   - [Build](#build)
   - [Installation](#installation)
   - [Usage](#usage)
+
+## Docs
+
+- [rayyan](/docs/rayyan.md)
+- [user](/docs/user.md)
 
 ## Build
 
@@ -30,7 +36,7 @@ To install Rayyan Python SDK, simply execute the following command
 in a terminal after you build the sdk first:
 
 ```shell
-pip install ./dist/rayyan-sdk-0.1.tar.gz 
+pip install ./dist/rayyan-sdk-0.1.tar.gz
 ```
 
 ## Usage
