@@ -6,6 +6,7 @@
   - [Table of Contents](#table-of-contents)
   - [Build](#build)
   - [Installation](#installation)
+  - [Usage](#usage)
 
 ## Build
 
@@ -30,4 +31,28 @@ in a terminal after you build the sdk first:
 
 ```shell
 pip install ./dist/rayyan-sdk-0.1.tar.gz 
+```
+
+## Usage
+
+To use Rayyan Python SDK, you will need to have a credentials json file like
+
+```json
+{
+    "access_token": "9c2b0fe74ab7cd8d1227cd2fd",
+    "token_type": "bearer",
+    "refresh_token": "b40e325a1a7f53831ec3c09fffc7"
+}
+```
+
+import Rayyan main class and pass the credentials file to it like this
+
+```python
+rayyan = Rayyan("cred.json")
+```
+
+to get user info
+
+```python
+user = rayyan.user.get_info()
 ```
