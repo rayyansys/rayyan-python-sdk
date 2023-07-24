@@ -17,15 +17,3 @@ Creates an instance of the `Rayyan` class.
 ```python
 rayyan_instance = Rayyan("/path/to/credentials.json")
 ```
-
-## Attributes
-
-### `user`
-
-An instance of the `User` class representing the authenticated user.
-
-#### Example Usage
-
-```python
-rayyan_instance._credentials_handler()
-```
