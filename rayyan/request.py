@@ -150,3 +150,10 @@ class Request:
             json.dump(new_credentials, credentials_file)
 
         self.is_refreshed = True
+
+    def credentials_file_handler(self, file_path) -> None:
+        self._credentials_file_path = file_path
+        _credentials = self.get_credentials_from_credentials_file()
+        self._access_token = _credentials["access_token"]
+        self._refresh_token = _credentials["refresh_token"]
+        self._token_type = _credentials["token_type"]
