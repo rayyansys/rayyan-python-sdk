@@ -52,7 +52,7 @@ To use Rayyan Python SDK, you will need to have a credentials file in JSON forma
 }
 ```
 
-import Rayyan main class and pass the credentials file to it like this
+Import Rayyan main class and pass the credentials file to it like this:
 
 ```python
 rayyan = Rayyan("cred.json")
