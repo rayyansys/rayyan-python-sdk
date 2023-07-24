@@ -58,7 +58,7 @@ Import Rayyan main class and pass the credentials file to it like this:
 rayyan = Rayyan("cred.json")
 ```
 
-to get user info
+To get the authenticated user info:
 
 ```python
 user = rayyan.user.get_info()
