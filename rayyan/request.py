@@ -70,9 +70,7 @@ class Request:
         This is a Python function that handles HTTP requests with various parameters and returns a
         dictionary of the response.
         """
-        headers[
-            "Authorization"
-        ] = f"{self.rayyan._token_type} {self.rayyan._access_token}"
+        headers["Authorization"] = f"{self._token_type} {self._access_token}"
         if method == "POST":
             headers["Content-Type"] = "application/json"
             payload = json.dumps(payload)
@@ -91,7 +89,7 @@ class Request:
         """
         This function reads and returns credentials data from a JSON file after validating it.
         """
-        with open(self.rayyan._credentials_file_path) as credentials_file:
+        with open(self._credentials_file_path) as credentials_file:
             credentials = json.load(credentials_file)
             return self.validate_credentials_data(credentials)
 
@@ -113,7 +111,7 @@ class Request:
         """
         payload: Dict[str, str] = {
             "grant_type": "refresh_token",
-            "refresh_token": self.rayyan._refresh_token,
+            "refresh_token": self._refresh_token,
         }
 
         response = request(
@@ -142,11 +140,11 @@ class Request:
             str, Union[int, str]
         ] = self.refresh_token_request_handler()
 
-        self.rayyan._access_token = str(new_credentials["access_token"])
-        self.rayyan._refresh_token = str(new_credentials["refresh_token"])
-        self.rayyan._token_type = str(new_credentials["token_type"])
+        self._access_token = str(new_credentials["access_token"])
+        self._refresh_token = str(new_credentials["refresh_token"])
+        self._token_type = str(new_credentials["token_type"])
 
-        with open(self.rayyan._credentials_file_path, "w") as credentials_file:
+        with open(self._credentials_file_path, "w") as credentials_file:
             json.dump(new_credentials, credentials_file)
 
         self.is_refreshed = True
