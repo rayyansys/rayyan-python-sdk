@@ -44,6 +44,7 @@ pip install ./dist/rayyan-sdk-0.1.tar.gz
 To use Rayyan Python SDK, you will need to have a credentials file in JSON format like the one below. You can retrieve such file by signing in to your Rayyan account and going to My Account page.
 
 ```json
+// creds.json
 {
     "access_token": "9c2b0fe74ab7cd8d1227cd2fd",
     "token_type": "bearer",
