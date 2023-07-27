@@ -60,8 +60,8 @@ class Request:
 
     def request_handler(
         self,
-        method: str,
         path: str,
+        method: str = "GET",
         headers: Dict[str, str] = {},
         payload: Union[Dict[str, str], str] = None,
         params: Dict[str, str] = {},
