@@ -18,8 +18,6 @@ class Request:
     handling, including refreshing access tokens and validating credentials data.
     """
 
-    is_refreshed: bool = False
-
     def __init__(self, rayyan: Rayyan):
         self.rayyan = rayyan
 
@@ -37,7 +35,7 @@ class Request:
         if code >= 200 and code <= 299:
             return data
 
-        elif response.status_code == 401 and not self.is_refreshed:
+        elif response.status_code == 401:
             self.refresh_credentials()
             return self.request_handler(method, path, headers, payload, params)
         response.raise_for_status()
@@ -139,8 +137,6 @@ class Request:
 
         with open(self._credentials_file_path, "w") as credentials_file:
             json.dump(new_credentials, credentials_file)
-
-        self.is_refreshed = True
 
     def credentials_file_handler(self, file_path) -> None:
         self._credentials_file_path = file_path
