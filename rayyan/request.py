@@ -30,6 +30,7 @@ class Request:
         path: str,
         headers: Dict[str, str],
         payload: Union[Dict[str, str], str] = {},
+        params: Dict[str, str] = {},
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
         data = {}
         try:
@@ -44,7 +45,7 @@ class Request:
 
         elif response.status_code == 401 and not self.is_refreshed:
             self.refresh_credentials()
-            return self.request_handler(method, path, headers, payload)
+            return self.request_handler(method, path, headers, payload, params)
 
         response.raise_for_status()
         reason = response.reason
@@ -84,7 +85,7 @@ class Request:
             data=payload,
         )
 
-        return self.response_handler(response, method, path, headers, payload)
+        return self.response_handler(response, method, path, headers, payload, params)
 
     def get_credentials_from_credentials_file(self) -> Dict[str, str]:
         """
