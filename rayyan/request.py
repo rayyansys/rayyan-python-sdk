@@ -73,16 +73,16 @@ class Request:
         """
         headers["Authorization"] = f"{self._token_type} {self._access_token}"
         headers["Content-Type"] = "application/json"
-
+        dumped_payload = payload
         if payload is not None:
-            payload = json.dumps(payload)
+            dumped_payload = json.dumps(payload)
 
         response = request(
             method=method,
             url=f"{self.rayyan._base_url}{path}",
             headers=headers,
             params=params,
-            data=payload,
+            data=dumped_payload,
         )
 
         return self.response_handler(response, method, path, headers, payload, params)
