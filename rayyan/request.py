@@ -21,7 +21,7 @@ class Request:
     def __init__(self, rayyan: Rayyan):
         self.rayyan = rayyan
 
-    def response_handler(
+    def _response_handler(
         self,
         response: Response,
         method: str,
@@ -36,7 +36,7 @@ class Request:
             return data
 
         elif response.status_code == 401:
-            self.refresh_credentials()
+            self._refresh_credentials()
             return self.request_handler(method, path, headers, payload, params)
         response.raise_for_status()
         reason = response.reason
@@ -74,17 +74,17 @@ class Request:
             data=dumped_payload,
         )
 
-        return self.response_handler(response, method, path, headers, payload, params)
+        return self._response_handler(response, method, path, headers, payload, params)
 
-    def get_credentials_from_credentials_file(self) -> Dict[str, str]:
+    def _get_credentials_from_credentials_file(self) -> Dict[str, str]:
         """
         This function reads and returns credentials data from a JSON file after validating it.
         """
         with open(self._credentials_file_path) as credentials_file:
             credentials = json.load(credentials_file)
-            return self.validate_credentials_data(credentials)
+            return self._validate_credentials_data(credentials)
 
-    def validate_credentials_data(self, data: Dict[str, str]) -> Dict[str, str]:
+    def _validate_credentials_data(self, data: Dict[str, str]) -> Dict[str, str]:
         """
         This function validates if a dictionary contains all the required keys for credentials data and
         raises an error if any key is missing.
@@ -95,7 +95,7 @@ class Request:
             )
         return data
 
-    def refresh_token_request_handler(self) -> Dict[str, Union[int, str]]:
+    def _refresh_token_request_handler(self) -> Dict[str, Union[int, str]]:
         """
         This function sends a request to refresh an access token using a refresh token and returns the
         response data.
@@ -122,14 +122,14 @@ class Request:
 
         return data
 
-    def refresh_credentials(self) -> None:
+    def _refresh_credentials(self) -> None:
         """
         This function refreshes the access token by calling an API and updating the access and refresh
         tokens in a credentials file.
         """
         new_credentials: Dict[
             str, Union[int, str]
-        ] = self.refresh_token_request_handler()
+        ] = self._refresh_token_request_handler()
 
         self._access_token = str(new_credentials["access_token"])
         self._refresh_token = str(new_credentials["refresh_token"])
@@ -138,9 +138,9 @@ class Request:
         with open(self._credentials_file_path, "w") as credentials_file:
             json.dump(new_credentials, credentials_file)
 
-    def credentials_file_handler(self, file_path) -> None:
+    def _credentials_file_handler(self, file_path) -> None:
         self._credentials_file_path = file_path
-        _credentials = self.get_credentials_from_credentials_file()
+        _credentials = self._get_credentials_from_credentials_file()
         self._access_token = _credentials["access_token"]
         self._refresh_token = _credentials["refresh_token"]
         self._token_type = _credentials["token_type"]

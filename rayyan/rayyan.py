@@ -8,4 +8,4 @@ class Rayyan:
         self.user = User(self)
         self.request = Request(self)
         self._base_url = url
-        self.request.credentials_file_handler(credentials_file_path)
+        self.request._credentials_file_handler(credentials_file_path)
