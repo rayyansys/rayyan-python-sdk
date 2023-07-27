@@ -63,7 +63,7 @@ class Request:
         method: str,
         path: str,
         headers: Dict[str, str] = {},
-        payload: Union[Dict[str, str], str] = {},
+        payload: Union[Dict[str, str], str] = None,
         params: Dict[str, str] = {},
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
         """
@@ -71,7 +71,7 @@ class Request:
         dictionary of the response.
         """
         headers["Authorization"] = f"{self._token_type} {self._access_token}"
-        if method == "POST":
+        if payload is not None:
             headers["Content-Type"] = "application/json"
             payload = json.dumps(payload)
 
