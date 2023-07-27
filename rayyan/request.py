@@ -32,21 +32,14 @@ class Request:
         payload: Union[Dict[str, str], str] = {},
         params: Dict[str, str] = {},
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
-        data = {}
-        try:
-            data = response.json()
-        except Exception:
-            data = {}
-
+        data = response.json()
         code: int = response.status_code
-
         if code >= 200 and code <= 299:
             return data
 
         elif response.status_code == 401 and not self.is_refreshed:
             self.refresh_credentials()
             return self.request_handler(method, path, headers, payload, params)
-
         response.raise_for_status()
         reason = response.reason
         response_body: Dict[str, Union[int, str, Dict[str, str]]] = {
@@ -54,8 +47,6 @@ class Request:
             "message": reason,
             "data": data,
         }
-        if data.get("error"):
-            response_body["error"] = data["error"][0]
 
         return response_body
 
