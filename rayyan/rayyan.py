@@ -6,6 +6,6 @@ from rayyan.paths import BASE_URL
 class Rayyan:
     def __init__(self, credentials_file_path: str, url: str = BASE_URL):
         self.user = User(self)
-        self._request = Request(self)
+        self.request = Request(self)
         self._base_url = url
-        self._request.credentials_file_handler(credentials_file_path)
+        self.request.credentials_file_handler(credentials_file_path)
