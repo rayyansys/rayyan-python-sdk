@@ -4,9 +4,10 @@ The `Rayyan` class provides an interface for interacting with the Rayyan API. It
 
 ## Constructor
 
-### `__init__(self, credentials_file_path: str) -> None`
+### `__init__(self, credentials_file_path: str, url: str = "https://staging.rayyan.ai") -> None`
 
 Creates an instance of the `Rayyan` class.
+ > it uses the staging enviroment by default but you can override the url at any time you needed to.
 
 #### Parameters
 
