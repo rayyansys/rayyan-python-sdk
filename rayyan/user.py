@@ -13,16 +13,16 @@ class User:
         self.__rayyan__ = rayyan
 
     def get_info(self) -> Dict[str, Union[int, str, Dict[str, str]]]:
-        return self.__rayyan__._request.request_handler(
+        return self.__rayyan__.request.request_handler(
             method="GET", path=USER_INFO_ROUTE
         )
 
     def delete(self) -> Dict[str, Union[int, str, Dict[str, str]]]:
-        return self.__rayyan__._request.request_handler(
+        return self.__rayyan__.request.request_handler(
             method="DELETE", path=DELETE_USER_ROUTE
         )
 
     def revoke_token(self) -> Dict[str, Union[int, str, Dict[str, str]]]:
-        return self.__rayyan__._request.request_handler(
+        return self.__rayyan__.request.request_handler(
             method="POST", path=REVOKE_TOKEN_ROUTE
         )
