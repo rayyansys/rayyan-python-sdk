@@ -1,5 +1,4 @@
 # ________base________
-STAGING_URL = "https://staging.rayyan.ai"
 BASE_URL = "https://rayyan.ai"
 REFRESH_TOKEN_ROUTE = "/oauth/token"
 # ________user________
