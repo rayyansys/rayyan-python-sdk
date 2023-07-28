@@ -30,7 +30,11 @@ class Request:
         payload: Union[Dict[str, str], str] = {},
         params: Dict[str, str] = {},
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
-        data = response.json()
+        if "application/json" in response.headers["Content-Type"]:
+            data = response.json()
+        else:
+            data = response.text
+
         code: int = response.status_code
         if code >= 200 and code <= 299:
             return data
