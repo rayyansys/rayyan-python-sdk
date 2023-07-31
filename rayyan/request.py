@@ -65,7 +65,7 @@ class Request:
         dictionary of the response.
         """
         headers["Authorization"] = f"{self._token_type} {self._access_token}"
-        headers["Content-Type"] = "application/json"
+        headers["Accept"] = "application/json"
         dumped_payload = payload
         if payload is not None:
             dumped_payload = json.dumps(payload)
