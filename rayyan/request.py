@@ -68,6 +68,7 @@ class Request:
         headers["Accept"] = "application/json"
         dumped_payload = payload
         if payload is not None:
+            headers["Content-Type"] = "application/json"
             dumped_payload = json.dumps(payload)
 
         response = request(
