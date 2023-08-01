@@ -2,6 +2,8 @@ import json
 from typing import TYPE_CHECKING, Dict, Union
 from requests import request
 from requests.models import Response
+from requests import Request as RequestModel
+from requests import Session
 from rayyan.conf import CREDENTIAL_KEYS
 from rayyan.errors import InvalidCredentialsError, RefreshTokenExpiredError
 from rayyan.paths import REFRESH_TOKEN_ROUTE
@@ -22,14 +24,11 @@ class Request:
         self.rayyan = rayyan
 
     def _response_handler(
-        self,
-        response: Response,
-        method: str,
-        path: str,
-        headers: Dict[str, str],
-        payload: Union[Dict[str, str], str] = {},
-        params: Dict[str, str] = {},
+        self, response: Response
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
+        if response.status_code == 401:
+            self._refresh_credentials()
+            response = self.session.send(self.prepped)
         if "application/json" in response.headers["Content-Type"]:
             data = response.json()
         else:
@@ -39,9 +38,6 @@ class Request:
         if code >= 200 and code <= 299:
             return data
 
-        elif response.status_code == 401:
-            self._refresh_credentials()
-            return self.request_handler(method, path, headers, payload, params)
         response.raise_for_status()
         reason = response.reason
         response_body: Dict[str, Union[int, str, Dict[str, str]]] = {
@@ -71,15 +67,17 @@ class Request:
             headers["Content-Type"] = "application/json"
             dumped_payload = json.dumps(payload)
 
-        response = request(
+        self.session = Session()
+        request = RequestModel(
             method=method,
             url=f"{self.rayyan._base_url}{path}",
             headers=headers,
             params=params,
             data=dumped_payload,
         )
-
-        return self._response_handler(response, method, path, headers, payload, params)
+        self.prepped = self.session.prepare_request(request)
+        response = self.session.send(self.prepped)
+        return self._response_handler(response)
 
     def _get_credentials_from_credentials_file(self) -> Dict[str, str]:
         """
