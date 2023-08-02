@@ -7,9 +7,11 @@ from requests import Session
 from rayyan.conf import CREDENTIAL_KEYS
 from rayyan.errors import InvalidCredentialsError, RefreshTokenExpiredError
 from rayyan.paths import REFRESH_TOKEN_ROUTE
+from requests import PreparedRequest
 
 if TYPE_CHECKING:
     from rayyan.rayyan import Rayyan
+
 else:
     Rayyan = None
 
@@ -24,11 +26,11 @@ class Request:
         self.rayyan = rayyan
 
     def _response_handler(
-        self, response: Response
+        self, response: Response, session: Session, prepared_request: PreparedRequest
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
         if response.status_code == 401:
             self._refresh_credentials()
-            response = self.session.send(self.prepped)
+            response = session.send(prepared_request)
         if "application/json" in response.headers["Content-Type"]:
             data = response.json()
         else:
@@ -67,7 +69,7 @@ class Request:
             headers["Content-Type"] = "application/json"
             dumped_payload = json.dumps(payload)
 
-        self.session = Session()
+        session = Session()
         request = RequestModel(
             method=method,
             url=f"{self.rayyan._base_url}{path}",
@@ -75,9 +77,9 @@ class Request:
             params=params,
             data=dumped_payload,
         )
-        self.prepped = self.session.prepare_request(request)
-        response = self.session.send(self.prepped)
-        return self._response_handler(response)
+        prepared_request = session.prepare_request(request)
+        response = session.send(prepared_request)
+        return self._response_handler(response, session, prepared_request)
 
     def _get_credentials_from_credentials_file(self) -> Dict[str, str]:
         """
