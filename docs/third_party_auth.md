@@ -1,12 +1,12 @@
-# MendeleyConnect Class Documentation
+# ThirdPartyAuth Class Documentation
 
-The `MendeleyConnect` class offers methods to connect and authenticate with the Mendeley third-party provider within the Rayyan system.
+The `ThirdPartyAuth` class offers methods to connect and authenticate with the Mendeley third-party provider within the Rayyan system.
 
 ## Constructor
 
-### `MendeleyConnect(rayyan: Rayyan, third_party: str)`
+### `ThirdPartyAuth(rayyan: Rayyan, third_party: str)`
 
-Create a new `MendeleyConnect` instance for connecting with the Mendeley provider.
+Create a new `ThirdPartyAuth` instance for connecting with the Mendeley provider.
 
 - `rayyan` (type: Rayyan): The Rayyan instance used for making requests.
 - `third_party` (type: str): The name of the third-party provider (e.g., "mendeley").
@@ -16,7 +16,7 @@ Create a new `MendeleyConnect` instance for connecting with the Mendeley provide
 ```python
 from rayyan.rayyan import Rayyan
 rayyan = Rayyan("cred.json")
-mendeley_instance = rayyan.mendeley_connect(rayyan, "mendeley")
+mendeley_instance = rayyan.third_party_auth(rayyan, "mendeley")
 ```
 
 ## Methods
@@ -61,7 +61,3 @@ Exchange an authorization code for an access token from Mendeley.
 access_token_from_code = mendeley_instance.get_access_token_from_code("authorization_code_here")
 print(access_token_from_code)
 ```
-
----
-
-Replace `"mendeley"` and `"authorization_code_here"` with real values according to your specific use case.

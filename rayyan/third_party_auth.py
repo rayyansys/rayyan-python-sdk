@@ -11,7 +11,7 @@ else:
 ALLOWED_PROVIDERS = [MENDELEY]
 
 
-class MendeleyConnect:
+class ThirdPartyAuth:
     def __init__(self, rayyan: Rayyan, third_party: str):
         self._validate_third_party_name(third_party)
         self.__rayyan__ = rayyan
