@@ -26,3 +26,31 @@ class ReviewAccess:
             path=f"{REVIEWS_ROUTE}/{id}/update_review_access",
             payload={"role_id": role_id, "user_emails": user_emails},
         )
+
+    def invite(
+        self,
+        id: int,
+        user_id: int,
+        user_emails: list,
+        user_reason: str,
+    ) -> dict:
+        return self.__rayyan__.request.request_handler(
+            method="POST",
+            path=f"{REVIEWS_ROUTE}/{id}/invite",
+            payload={
+                "user_id": user_id,
+                "user_emails": user_emails,
+                "user_reason": user_reason,
+            },
+        )
+
+    def revoke(
+        self,
+        id: int,
+        user_id: int,
+    ) -> dict:
+        return self.__rayyan__.request.request_handler(
+            method="POST",
+            path=f"{REVIEWS_ROUTE}/{id}/revoke",
+            params={"user_id": user_id},
+        )
