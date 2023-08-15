@@ -27,7 +27,7 @@ class Duplicates:
         self, id, article_id, duplicate_action: int, isDeletedArticle: bool = False
     ) -> Dict[str, str]:
         return self.__rayyan__.request.request_handler(
-            method="PAtCH",
+            method="PATCH",
             payload={
                 "duplicate_action": duplicate_action,
                 "isDeletedArticle": isDeletedArticle,
