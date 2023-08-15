@@ -30,7 +30,7 @@ class ReviewAccess:
     def invite(
         self,
         id: int,
-        user_id: int,
+        role_id: int,
         user_emails: list,
         user_reason: str,
     ) -> dict:
@@ -38,7 +38,7 @@ class ReviewAccess:
             method="POST",
             path=f"{REVIEWS_ROUTE}/{id}/invite",
             payload={
-                "user_id": user_id,
+                "role_id": role_id,
                 "user_emails": user_emails,
                 "user_reason": user_reason,
             },
