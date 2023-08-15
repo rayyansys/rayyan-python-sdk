@@ -54,3 +54,16 @@ class ReviewAccess:
             path=f"{REVIEWS_ROUTE}/{id}/revoke",
             params={"user_id": user_id},
         )
+
+    def restore(
+        self,
+        id: int,
+        user_id: int,
+    ) -> dict:
+        return self.__rayyan__.request.request_handler(
+            method="POST",
+            path=f"{REVIEWS_ROUTE}/{id}/restore",
+            params={
+                "user_id": user_id,
+            },
+        )
