@@ -25,15 +25,38 @@ third_party = rayyan.third_party_auth(rayyan, MENDELEY)
 
 ### `get_auth_link() -> Dict[str, str]`
 
-Get the authorization link for connecting with Provider.
-
 **Returns**: A dictionary containing the authorization link.
+
+>Get the authorization link for connecting with Provider.
+This method will fetch the OAuth URL. You should redirect the end user to this URL to complete linking his Third party auth account with Rayyan.
+If you are a mobile client:
+You should open the link in an in-app browser tab and check for the HTTP status code for this tab.
+If you are a web client:
+You should open the link in a new tab and listen when the URL changes to the rayyan.ai URL, then check for the HTTP status code for this tab.
+If you got 200 OK, you should extract the code param from the browser tab and request with the code to get_access_token_from_code method.
+If you got 201 Created, it means that Rayyan already generated an access token, and there is no need to capture the code and call the get_access_token_from_code method. Instead, you should call the get_access_token method to get a valid access token.
 
 **Example**:
 
 ```python
 auth_link = third_party.get_auth_link()
 print(auth_link)
+```
+
+### `get_access_token_from_code(code: str) -> Dict[str, str]`
+
+Generate a valid provider access token from an OAuth code.
+
+- `code` (type: str): The authorization code.
+
+**Returns**: A dictionary containing the access token.
+
+
+**Example**:
+
+```python
+access_token_from_code = third_party.get_access_token_from_code("authorization_code_here")
+print(access_token_from_code)
 ```
 
 ### `get_access_token() -> Dict[str, str]`
@@ -47,19 +70,4 @@ Get the access token for Provider authentication.
 ```python
 access_token = third_party.get_access_token()
 print(access_token)
-```
-
-### `get_access_token_from_code(code: str) -> Dict[str, str]`
-
-Exchange an authorization code for an access token from Provider.
-
-- `code` (type: str): The authorization code.
-
-**Returns**: A dictionary containing the access token.
-
-**Example**:
-
-```python
-access_token_from_code = third_party.get_access_token_from_code("authorization_code_here")
-print(access_token_from_code)
 ```
