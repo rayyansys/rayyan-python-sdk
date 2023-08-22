@@ -233,19 +233,6 @@ class Review:
             path=f"{REVIEWS_ROUTE}/{id}/unarchive",
         )
 
-    def restore(
-        self,
-        id: int,
-        user_id: int,
-    ) -> Dict[str, str]:
-        return self.__rayyan__.request.request_handler(
-            method="POST",
-            path=f"{REVIEWS_ROUTE}/{id}/restore",
-            params={
-                "user_id": user_id,
-            },
-        )
-
     def blind(
         self,
         id: int,
