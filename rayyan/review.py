@@ -94,9 +94,46 @@ class Review:
             payload={"review": review},
         )
 
-    def results(self, id: int) -> Dict[str, str]:
+    def results(
+        self,
+        id: int,
+        params: Dict[str, int] = {
+            "start": int,
+            "length": int,
+            "order[0][column]": int,
+            "order[0][dir]": str,
+            "search[value]": str,
+            "extra[article_ids][]": int,
+            "extra[mode]": str,
+            "extra[searches][]": int,
+            "extra[highlights_1][]": str,
+            "extra[highlights_2][]": str,
+            "extra[language][]": str,
+            "extra[keyphrases][]": str,
+            "extra[locations][]": str,
+            "extra[journal][]": int,
+            "extra[authors][]": int,
+            "extra[year][]": int,
+            "extra[publication_types][]": str,
+            "extra[user_labels][]": str,
+            "extra[exclusion_labels][]": str,
+            "extra[abstract_languages][]": str,
+            "extra[fulltext_types][]": str,
+            "extra[customized_by]": int,
+            "extra[decision_at_least]": int,
+            "extra[decision_at_most]": int,
+            "extra[dedup_result]": int,
+            "extra[dedup_job_id]": int,
+            "extra[dedup_result_cluster_id]": int,
+            "extra[exact_matches]": int,
+            "extra[pico_participants][]": str,
+            "extra[pico_intervention][]": str,
+            "extra[pico_control][]": str,
+            "extra[pico_outcome][]": str,
+        },
+    ) -> Dict[str, str]:
         return self.__rayyan__.request.request_handler(
-            method="GET", path=f"{REVIEWS_ROUTE}/{id}/results"
+            method="GET", path=f"{REVIEWS_ROUTE}/{id}/results", params=params
         )
 
     def customize(
