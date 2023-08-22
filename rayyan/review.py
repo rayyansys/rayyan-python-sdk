@@ -142,7 +142,7 @@ class Review:
             "types[]": types,
         }
         return self.__rayyan__.request.request_handler(
-            method="GET",
+            method="POST",
             params=params,
             path=f"{REVIEWS_ROUTE}/{id}/customizations",
         )
