@@ -154,9 +154,7 @@ review_id = 123
 article_id = 456
 customization_plan = {
     "included": 1,
-    "label1": "Included",
-    "__EXR__reason1": "Relevant to research question",
-    "__EXR__reason2": "Clear methodology",
+    "label1": "Included"
 }
 customized_result = review_instance.customize(review_id, article_id, customization_plan)
 print(customized_result)
