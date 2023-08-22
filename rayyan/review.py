@@ -140,12 +140,7 @@ class Review:
         self,
         id: int,
         article_id: int,
-        plan={
-            "included": int,
-            "label1": str,
-            "__EXR__reason1": str,
-            "__EXR__reason2": str,
-        },
+        plan: dict,
     ) -> Dict[str, str]:
         return self.__rayyan__.request.request_handler(
             method="POST",
