@@ -105,8 +105,8 @@ class Review:
         article_id: int,
         plan={
             "included": int,
-            "label1": int,
-            "__EXR__reason1": int,
+            "label1": str,
+            "__EXR__reason1": str,
         },
     ) -> Dict[str, str]:
         return self.__rayyan__.request.request_handler(
@@ -134,8 +134,8 @@ class Review:
     def bulk_customizations(
         self,
         id: int,
+        types: list,
         start_id: int = None,
-        types: list = ["inclusion_decisions", "labels", "exclusion_reasons"],
     ) -> Dict[str, str]:
         params = {
             "start_id": start_id,
