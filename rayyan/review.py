@@ -144,7 +144,7 @@ class Review:
         return self.__rayyan__.request.request_handler(
             method="POST",
             params=params,
-            path=f"{REVIEWS_ROUTE}/{id}/customizations",
+            path=f"{REVIEWS_ROUTE}/{id}/customize",
         )
 
     def get_customizations(
