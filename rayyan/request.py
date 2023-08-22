@@ -55,7 +55,7 @@ class Request:
         path: str,
         method: str = "GET",
         headers: Dict[str, str] = {},
-        payload: Union[Dict[str, str], str] = None,
+        payload: Dict[str, Union[int, str, Dict[str, str]]] = None,
         params: Dict[str, str] = {},
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
         """
@@ -143,7 +143,7 @@ class Request:
         with open(self._credentials_file_path, "w") as credentials_file:
             json.dump(new_credentials, credentials_file)
 
-    def _credentials_file_handler(self, file_path) -> None:
+    def _credentials_file_handler(self, file_path: str) -> None:
         self._credentials_file_path = file_path
         _credentials = self._get_credentials_from_credentials_file()
         self._access_token = _credentials["access_token"]
