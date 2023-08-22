@@ -107,6 +107,7 @@ class Review:
             "included": int,
             "label1": str,
             "__EXR__reason1": str,
+            "__EXR__reason2": str,
         },
     ) -> Dict[str, str]:
         return self.__rayyan__.request.request_handler(
