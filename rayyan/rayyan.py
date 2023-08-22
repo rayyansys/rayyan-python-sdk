@@ -1,5 +1,6 @@
 from rayyan.request import Request
 from rayyan.user import User
+from rayyan.review_access import ReviewAccess
 from rayyan.highlight import Highlight
 from rayyan.duplicates import Duplicates
 from rayyan.third_party_auth import ThirdPartyAuth
@@ -10,6 +11,7 @@ from rayyan.paths import BASE_URL
 class Rayyan:
     def __init__(self, credentials_file_path: str, url: str = BASE_URL):
         self.user = User(self)
+        self.review_access = ReviewAccess(self)
         self.highlight = Highlight(self)
         self.duplicates = Duplicates(self)
         self.third_party_auth = ThirdPartyAuth(self)
