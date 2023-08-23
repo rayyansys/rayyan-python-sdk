@@ -13,9 +13,11 @@ Create a new `Notes` instance.
 **Example**:
 
 ```python
-from rayyan.rayyan import Rayyan
-rayyan = Rayyan("cred.json")
-notes_instance = rayyan.notes(rayyan)
+from rayyan import Rayyan
+from rayyan.notes import Notes
+
+rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+notes_instance = Notes(rayyan)
 ```
 
 ## Methods

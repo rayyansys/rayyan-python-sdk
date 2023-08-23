@@ -13,10 +13,11 @@ Create a new `Duplicates` instance.
 **Example**:
 
 ```python
-from rayyan.rayyan import Rayyan
-rayyan = Rayyan(Certainly, here's the documentation for the `Duplicates` class:
-"cred.json")
-duplicates_instance = rayyan.duplicates(rayyan)
+from rayyan import Rayyan
+from rayyan.duplicates import Duplicates
+
+rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+duplicates_instance = Duplicates(rayyan)
 ```
 
 ## Methods

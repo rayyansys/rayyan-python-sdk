@@ -13,9 +13,11 @@ Create a new `Highlight` instance.
 **Example**:
 
 ```python
-from rayyan.rayyan import Rayyan
-rayyan = Rayyan("cred.json")
-highlight_instance = rayyan.highlight(rayyan)
+from rayyan import Rayyan
+from rayyan.highlight import Highlight
+
+rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+highlight_instance = Highlight(rayyan)
 ```
 
 ## Methods
