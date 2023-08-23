@@ -47,7 +47,6 @@ To use Rayyan Python SDK, you will need to have a credentials file in JSON forma
 // creds.json
 {
     "access_token": "9c2b0fe74ab7cd8d1227cd2fd",
-    "token_type": "bearer",
     "refresh_token": "b40e325a1a7f53831ec3c09fffc7"
 }
 ```

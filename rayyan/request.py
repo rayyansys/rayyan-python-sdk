@@ -62,7 +62,7 @@ class Request:
         This is a Python function that handles HTTP requests with various parameters and returns a
         dictionary of the response.
         """
-        headers["Authorization"] = f"{self._token_type} {self._access_token}"
+        headers["Authorization"] = f"bearer {self._access_token}"
         headers["Accept"] = "application/json"
         dumped_payload = payload
         if payload is not None:
@@ -138,7 +138,6 @@ class Request:
 
         self._access_token = str(new_credentials["access_token"])
         self._refresh_token = str(new_credentials["refresh_token"])
-        self._token_type = str(new_credentials["token_type"])
 
         with open(self._credentials_file_path, "w") as credentials_file:
             json.dump(new_credentials, credentials_file)
@@ -148,4 +147,3 @@ class Request:
         _credentials = self._get_credentials_from_credentials_file()
         self._access_token = _credentials["access_token"]
         self._refresh_token = _credentials["refresh_token"]
-        self._token_type = _credentials["token_type"]
