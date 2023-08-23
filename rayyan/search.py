@@ -31,3 +31,43 @@ class Search:
         return self.__rayyan__.request.request_handler(
             method="GET", path=f"{REVIEWS_ROUTE}/{id}/searches/new"
         )
+
+    def upload_search_file(
+        self,
+        key: str,
+        credential: str,
+        algorithm: str,
+        date: str,
+        signature: str,
+        policy: str,
+        success_action_status: int,
+        url: str,
+        file: str,
+    ) -> dict:
+        file_name = file.split("/")[-1]
+        files = [
+            (
+                "file",
+                (
+                    file_name,
+                    open(f"{file}/{file_name}", "rb"),
+                ),
+            )
+        ]
+        return self.__rayyan__.request.request_handler(
+            method="POST",
+            path=url,
+            payload={
+                "search": {
+                    "key": key,
+                    "x-amz-credential": credential,
+                    "x-amz-algorithm": algorithm,
+                    "x-amz-date": date,
+                    "x-amz-signature": signature,
+                    "policy": policy,
+                    "success_action_status": success_action_status,
+                }
+            },
+            body_type="data",
+            files=files,
+        )
