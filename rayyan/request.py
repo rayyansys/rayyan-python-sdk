@@ -53,10 +53,12 @@ class Request:
     def request_handler(
         self,
         path: str,
+        files: list = None,
         method: str = "GET",
         headers: Dict[str, str] = {},
         payload: Union[Dict[str, str], str] = None,
         params: Dict[str, str] = {},
+        body_type: str = "json",
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
         """
         This is a Python function that handles HTTP requests with various parameters and returns a
@@ -65,7 +67,7 @@ class Request:
         headers["Authorization"] = f"{self._token_type} {self._access_token}"
         headers["Accept"] = "application/json"
         dumped_payload = payload
-        if payload is not None:
+        if body_type == "json" and payload is not None:
             headers["Content-Type"] = "application/json"
             dumped_payload = json.dumps(payload)
 
@@ -76,6 +78,7 @@ class Request:
             headers=headers,
             params=params,
             data=dumped_payload,
+            files=files,
         )
         prepared_request = session.prepare_request(request)
         response = session.send(prepared_request)
