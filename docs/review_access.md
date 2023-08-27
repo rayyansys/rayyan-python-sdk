@@ -14,10 +14,10 @@ Create a new `ReviewAccess` instance.
 
 ```python
 from rayyan import Rayyan
-from rayyan.review import Review
+from rayyan.review_access import ReviewAccess
 
 rayyan = Rayyan(credentials_file_path="cred.json")
-review_instance = Review(rayyan)
+review_access_instance = ReviewAccess(rayyan)
 ```
 
 ## Methods
