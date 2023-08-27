@@ -13,6 +13,12 @@
 
 - [rayyan](/docs/rayyan.md)
 - [user](/docs/user.md)
+- [duplicates](/docs/duplicates.md)
+- [highlight](/docs/highlight.md)
+- [notes](/docs/notes.md)
+- [review_access](/docs/review_access.md)
+- [review](/docs/review.md)
+- [third_party_auth](/docs/third_party_auth.md)
 
 ## Build
 
