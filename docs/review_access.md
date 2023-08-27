@@ -16,7 +16,7 @@ Create a new `ReviewAccess` instance.
 from rayyan import Rayyan
 from rayyan.review import Review
 
-rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+rayyan = Rayyan(credentials_file_path="cred.json")
 review_instance = Review(rayyan)
 ```
 

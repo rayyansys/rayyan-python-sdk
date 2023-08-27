@@ -16,7 +16,7 @@ Create a new `Notes` instance.
 from rayyan import Rayyan
 from rayyan.notes import Notes
 
-rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+rayyan = Rayyan(credentials_file_path="cred.json")
 notes_instance = Notes(rayyan)
 ```
 

@@ -16,7 +16,7 @@ Create a new `Highlight` instance.
 from rayyan import Rayyan
 from rayyan.highlight import Highlight
 
-rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+rayyan = Rayyan(credentials_file_path="cred.json")
 highlight_instance = Highlight(rayyan)
 ```
 

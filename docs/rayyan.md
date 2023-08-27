@@ -18,5 +18,5 @@ Creates an instance of the `Rayyan` class.
 #### Example Usage
 
 ```python
-rayyan_instance = Rayyan(credentials_file_path = "/path/to/credentials.json", url = "https://staging.rayyan.ai")
+rayyan_instance = Rayyan(credentials_file_path = "/path/to/credentials.json")
 ```

@@ -20,7 +20,7 @@ from rayyan import Rayyan
 from rayyan.third_party_auth import ThirdPartyAuth
 from rayyan.conf import MENDELEY
 
-rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+rayyan = Rayyan(credentials_file_path="cred.json")
 third_party_auth_instance = ThirdPartyAuth(rayyan, MENDELEY)
 
 ```

@@ -16,7 +16,7 @@ Create a new `Duplicates` instance.
 from rayyan import Rayyan
 from rayyan.duplicates import Duplicates
 
-rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+rayyan = Rayyan(credentials_file_path="cred.json")
 duplicates_instance = Duplicates(rayyan)
 ```
 

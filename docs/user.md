@@ -18,7 +18,7 @@ Creates an instance of the `User` class.
 from rayyan import Rayyan
 from rayyan.user import User
 
-rayyan = Rayyan(credentials_file_path="cred.json", url="https://staging.rayyan.ai")
+rayyan = Rayyan(credentials_file_path="cred.json")
 user_instance = User(rayyan)
 ```
 
