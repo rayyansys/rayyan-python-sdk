@@ -211,7 +211,7 @@ review_id = 789
 customization_params = {
     "start_id": 100,
     "end_id": 150,
-    "types[]": ["Type1", "Type2"],
+    "types[]": ["inclusion_decisions", "labels","exclusion_reasons"],
 }
 customization_data = review_instance.get_customizations(review_id, customization_params)
 print(customization_data)
