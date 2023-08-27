@@ -167,12 +167,14 @@ class Review:
     def bulk_customizations(
         self,
         id: int,
-        types: list,
-        start_id: int = None,
+        key: str,
+        value: int,
+        article_ids: str,
     ) -> Dict[str, str]:
         params = {
-            "start_id": start_id,
-            "types[]": types,
+            "key": key,
+            "value": value,
+            "article_ids": article_ids,
         }
         return self.__rayyan__.request.request_handler(
             method="POST",
