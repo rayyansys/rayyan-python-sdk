@@ -30,6 +30,7 @@ class Request:
     ) -> Dict[str, Union[int, str, Dict[str, str]]]:
         if response.status_code == 401:
             self._refresh_credentials()
+            prepared_request.headers["Authorization"] = f"Bearer {self._access_token}"
             response = session.send(prepared_request)
         if "application/json" in response.headers["Content-Type"]:
             data = response.json()
