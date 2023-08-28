@@ -15,9 +15,11 @@ Creates an instance of the `User` class.
 #### Example Usage
 
 ```python
-from rayyan.rayyan import Rayyan
-rayyan = Rayyan("cred.json")
-user_instance = rayyan.user
+from rayyan import Rayyan
+from rayyan.user import User
+
+rayyan = Rayyan(credentials_file_path="cred.json")
+user_instance = User(rayyan)
 ```
 
 ## Methods
