@@ -13,23 +13,9 @@ class Search:
     def __init__(self, rayyan: Rayyan):
         self.__rayyan__ = rayyan
 
-    def create(self, id: int, s3_key: str, original_filename: str) -> dict:
+    def pre_signed_url(self, review_id: int) -> dict:
         return self.__rayyan__.request.request_handler(
-            method="POST",
-            path=f"{REVIEWS_ROUTE}/{id}/searches",
-            payload={
-                "search": {"s3_key": s3_key, "original_filename": original_filename}
-            },
-        )
-
-    def delete(self, id: int, response: dict) -> dict:
-        return self.__rayyan__.request.request_handler(
-            method="DELETE", path=f"{REVIEWS_ROUTE}/{id}/searches/{response}"
-        )
-
-    def pre_signed_url(self, id: int) -> dict:
-        return self.__rayyan__.request.request_handler(
-            method="GET", path=f"{REVIEWS_ROUTE}/{id}/searches/new"
+            method="GET", path=f"{REVIEWS_ROUTE}/{review_id}/searches/new"
         )
 
     def upload_search_file(
@@ -70,4 +56,18 @@ class Search:
             },
             body_type="data",
             files=files,
+        )
+
+    def create(self, review_id: int, s3_key: str, original_filename: str) -> dict:
+        return self.__rayyan__.request.request_handler(
+            method="POST",
+            path=f"{REVIEWS_ROUTE}/{review_id}/searches",
+            payload={
+                "search": {"s3_key": s3_key, "original_filename": original_filename}
+            },
+        )
+
+    def delete(self, review_id: int, id: int) -> dict:
+        return self.__rayyan__.request.request_handler(
+            method="DELETE", path=f"{REVIEWS_ROUTE}/{review_id}/searches/{id}"
         )
