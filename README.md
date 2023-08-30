@@ -19,6 +19,7 @@
 - [review_access](/docs/review_access.md)
 - [review](/docs/review.md)
 - [third_party_auth](/docs/third_party_auth.md)
+- [search](/docs/search.md)
 
 ## Build
 
