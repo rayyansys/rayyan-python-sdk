@@ -181,7 +181,7 @@ print(review_articles)
 ### Bulk Customizations
 
 ```python
-def bulk_customizations(self, id: int, types: list, start_id: int) -> Dict[str, str]:
+def bulk_customizations(self,id: int,key: str,value: int,article_ids: str,) -> Dict[str, str]:
 ```
 
 Apply bulk customizations to a review for specified article types.
@@ -189,10 +189,11 @@ Apply bulk customizations to a review for specified article types.
 **Example:**
 
 ```python
-review_id = 123
-article_types = ["Type1", "Type2"]
-start_article_id = 100
-bulk_custom_result = review_instance.bulk_customizations(review_id, article_types, start_article_id)
+key = "xyz"
+value = 1
+article_ids = "1,2,3"
+id = 1
+bulk_custom_result = review_instance.bulk_customizations(id,key, value, article_ids)
 print(bulk_custom_result)
 ```
 
@@ -211,7 +212,7 @@ review_id = 789
 customization_params = {
     "start_id": 100,
     "end_id": 150,
-    "types[]": ["Type1", "Type2"],
+    "types[]": ["inclusion_decisions", "labels","exclusion_reasons"],
 }
 customization_data = review_instance.get_customizations(review_id, customization_params)
 print(customization_data)

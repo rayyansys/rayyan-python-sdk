@@ -13,9 +13,11 @@ Create a new `ReviewAccess` instance.
 **Example**:
 
 ```python
-from rayyan.rayyan import Rayyan
-rayyan = Rayyan("cred.json")
-review_access_instance = rayyan.review_access(rayyan)
+from rayyan import Rayyan
+from rayyan.review_access import ReviewAccess
+
+rayyan = Rayyan(credentials_file_path="cred.json")
+review_access_instance = ReviewAccess(rayyan)
 ```
 
 ## Methods

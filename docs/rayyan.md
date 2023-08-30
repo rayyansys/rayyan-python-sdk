@@ -7,7 +7,8 @@ The `Rayyan` class provides an interface for interacting with the Rayyan API. It
 ### `__init__(self, credentials_file_path: str, url: str = "https://rayyan.ai") -> None`
 
 Creates an instance of the `Rayyan` class.
- > it uses the production enviroment by default but you can override the url at any time you needed to.
+
+> it uses the production enviroment by default but you can override the url at any time you needed to.
 
 #### Parameters
 
@@ -17,6 +18,5 @@ Creates an instance of the `Rayyan` class.
 #### Example Usage
 
 ```python
-rayyan_instance = Rayyan("/path/to/credentials.json")
-staging_rayyan_instance = Rayyan(credentials_file_path = "/path/to/credentials.json", url = "https://staging.rayyan.ai")
+rayyan_instance = Rayyan(credentials_file_path = "/path/to/credentials.json")
 ```

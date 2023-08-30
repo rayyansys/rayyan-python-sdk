@@ -13,6 +13,12 @@
 
 - [rayyan](/docs/rayyan.md)
 - [user](/docs/user.md)
+- [duplicates](/docs/duplicates.md)
+- [highlight](/docs/highlight.md)
+- [notes](/docs/notes.md)
+- [review_access](/docs/review_access.md)
+- [review](/docs/review.md)
+- [third_party_auth](/docs/third_party_auth.md)
 
 ## Build
 
@@ -47,7 +53,6 @@ To use Rayyan Python SDK, you will need to have a credentials file in JSON forma
 // creds.json
 {
     "access_token": "9c2b0fe74ab7cd8d1227cd2fd",
-    "token_type": "bearer",
     "refresh_token": "b40e325a1a7f53831ec3c09fffc7"
 }
 ```
