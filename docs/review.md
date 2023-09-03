@@ -14,9 +14,11 @@ class Review:
 ### Example Usage
 
 ```python
-from rayyan.rayyan import Rayyan
+from rayyan import Rayyan
+from rayyan.review import Review
+
 rayyan = Rayyan("cred.json")
-review_instance = rayyan.review(rayyan)
+review_instance = Review(rayyan)
 ```
 
 ## Methods
