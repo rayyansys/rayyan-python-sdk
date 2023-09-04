@@ -29,7 +29,7 @@ class Admin:
         )
 
     # __________________search________________
-    def lis_searches(self) -> dict:
+    def list_searches(self) -> dict:
         return self.__rayyan__.request.request_handler(
             method="GET", path=f"{ADMIN_ROUTE}/searches.json"
         )
