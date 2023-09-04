@@ -55,14 +55,8 @@ class Admin:
             method="POST", path=f"{ADMIN_ROUTE}/reviews/{id}/archive.json"
         )
 
-    def list_reviews(
-        self, is_blind_eq: bool, title_cont: str, total_articles_gt_any: int
-    ) -> dict:
-        params = {
-            "q[is_blind_eq]": is_blind_eq,
-            "q[title_cont]": title_cont,
-            "q[total_articles_gt_any]": total_articles_gt_any,
-        }
+    def list_reviews(self, filters: dict) -> dict:
+        params = {f"q[{key}]": value for key, value in filters.items()}
         return self.__rayyan__.request.request_handler(
             method="GET", path=f"{ADMIN_ROUTE}/reviews.json", params=params
         )

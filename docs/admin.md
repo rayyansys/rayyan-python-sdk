@@ -138,12 +138,7 @@ admin.archive_review(123)
 ### list_reviews
 
 ```python
-def list_reviews(
-  self,
-  is_blind_eq: bool,
-  title_cont: str,
-  total_articles_gt_any: int
-) -> dict
+def list_reviews(self,filters:dict) -> dict
 ```
 
 List reviews.
@@ -152,9 +147,11 @@ List reviews.
 
 ```python
 admin.list_reviews(
-  True,
-  "Review",
-  100
+{
+    "is_blind_eq": True,
+    "title_cont":"Review",
+    "total_articles_gt_any":100
+    }
 )
 ```
 
