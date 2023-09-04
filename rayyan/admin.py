@@ -13,7 +13,7 @@ class Admin:
     def __init__(self, rayyan: Rayyan):
         self.__rayyan__ = rayyan
 
-    def lis_full_texts(self) -> dict:
+    def list_full_texts(self) -> dict:
         return self.__rayyan__.request.request_handler(
             method="GET", path=f"{ADMIN_ROUTE}/fulltexts.json"
         )
