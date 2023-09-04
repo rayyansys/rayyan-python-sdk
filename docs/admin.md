@@ -265,7 +265,7 @@ admin.edit_team(
 ### create_team
 
 ```python
-def create_team(self, name: str) -> dict
+def create_team(self, name: str, capacity: int) -> dict
 ```
 
 Create a team.
@@ -273,7 +273,7 @@ Create a team.
 **Example:**
 
 ```python
-admin.create_team("My team")
+admin.create_team("My team",10)
 ```
 
 ### list_teams

@@ -108,11 +108,14 @@ class Admin:
             },
         )
 
-    def create_team(self, name: str) -> dict:
+    def create_team(self, name: str, capacity: int) -> dict:
         return self.__rayyan__.request.request_handler(
             method="POST",
             path=f"{ADMIN_ROUTE}/teams.json",
-            payload={"team[name]": name},
+            payload={
+                "team[name]": name,
+                "team[capacity]": capacity,
+            },
         )
 
     def list_teams(self) -> dict:
