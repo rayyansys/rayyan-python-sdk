@@ -55,7 +55,7 @@ class Admin:
             method="POST", path=f"{ADMIN_ROUTE}/reviews/{id}/archive.json"
         )
 
-    def list_reviews(self, filters: dict) -> dict:
+    def list_reviews(self, params: dict) -> dict:
         params = {f"q[{key}]": value for key, value in filters.items()}
         return self.__rayyan__.request.request_handler(
             method="GET", path=f"{ADMIN_ROUTE}/reviews.json", params=params
