@@ -36,7 +36,7 @@ class Admin:
 
     def delete_searches(self, id: int) -> dict:
         return self.__rayyan__.request.request_handler(
-            method="DELETE", path=f"{ADMIN_ROUTE}/searches{id}.json"
+            method="DELETE", path=f"{ADMIN_ROUTE}/searches/{id}.json"
         )
 
     def show_search(self, id: int) -> dict:
