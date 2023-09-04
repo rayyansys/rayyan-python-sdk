@@ -96,7 +96,13 @@ class Admin:
         )
 
     def edit_team(
-        self, id: int, name: str, capacity: str, new_collaborator_emails: str
+        self,
+        id: int,
+        name: str,
+        capacity: str,
+        new_collaborator_emails: str,
+        new_admin_emails: str,
+        new_viewer_emails: str,
     ) -> dict:
         return self.__rayyan__.request.request_handler(
             method="PUT",
@@ -105,6 +111,8 @@ class Admin:
                 "team[name]": name,
                 "team[capacity]": capacity,
                 "team[new_collaborator_emails]": new_collaborator_emails,
+                "team[new_admin_emails]": new_admin_emails,
+                "team[new_viewer_emails]": new_viewer_emails,
             },
         )
 

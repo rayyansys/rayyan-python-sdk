@@ -245,7 +245,9 @@ def edit_team(
   id: int,
   name: str,
   capacity: str,
-  new_collaborator_emails: str
+  new_collaborator_emails: str,
+  new_admin_emails: str,
+  new_viewer_emails: str,
 ) -> dict
 ```
 
@@ -258,7 +260,9 @@ admin.edit_team(
   123,
   "New name",
   "10",
-  "test@example.com"
+  "test@example.com",
+  "test@example.com",
+  "test@example.com",
 )
 ```
 
