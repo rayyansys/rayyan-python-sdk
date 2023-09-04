@@ -20,7 +20,7 @@ class Admin:
 
     def delete_full_texts(self, id: int) -> dict:
         return self.__rayyan__.request.request_handler(
-            method="DELETE", path=f"{ADMIN_ROUTE}/fulltexts{id}.json"
+            method="DELETE", path=f"{ADMIN_ROUTE}/fulltexts/{id}.json"
         )
 
     def show_full_text(self, id: int) -> dict:
