@@ -111,13 +111,13 @@ class Admin:
         )
 
     def create_team(self, name: str, capacity=None) -> dict:
+        payload = {"team[name]": name}
+        if capacity:
+            payload["team[capacity]"] = capacity
         return self.__rayyan__.request.request_handler(
             method="POST",
             path=f"{ADMIN_ROUTE}/teams.json",
-            payload={
-                "team[name]": name,
-                "team[capacity]": capacity,
-            },
+            payload=payload,
         )
 
     def list_teams(self) -> dict:
