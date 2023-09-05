@@ -93,7 +93,7 @@ class Admin:
         self,
         id: int,
         name: str,
-        capacity: str,
+        capacity: int,
         new_collaborator_emails: str,
         new_admin_emails: str,
         new_viewer_emails: str,
@@ -110,7 +110,7 @@ class Admin:
             },
         )
 
-    def create_team(self, name: str, capacity) -> dict:
+    def create_team(self, name: str, capacity: {}) -> dict:
         return self.__rayyan__.request.request_handler(
             method="POST",
             path=f"{ADMIN_ROUTE}/teams.json",
