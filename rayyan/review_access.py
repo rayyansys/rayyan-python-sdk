@@ -17,7 +17,7 @@ class ReviewAccess:
         return self.__rayyan__.request.request_handler(
             method="POST",
             path=f"{REVIEWS_ROUTE}/{id}/delete_review_access",
-            params=user_id,
+            params={"user_id": user_id},
         )
 
     def update_access(self, id: int, role_id: int, user_emails: list) -> dict:

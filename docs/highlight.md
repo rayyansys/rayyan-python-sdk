@@ -39,19 +39,19 @@ highlight_data = highlight_instance.create_highlight(id=123, category_id=456, ke
 print(highlight_data)
 ```
 
-### `delete_highlight(id: int, category_id: int, body_id: int) -> dict`
+### `delete_highlight(id: int, category_id: int, keyword: str) -> dict`
 
 Delete a highlight from an article within a review.
 
 - `id` (type: int): The review identifier.
 - `category_id` (type: int): The category ID of the highlight to delete.
-- `body_id` (type: int): The ID of the highlighted content.
+- `keyword` (type: str): The ID of the highlighted content.
 
 **Returns**: A dictionary confirming the deletion of the highlight.
 
 **Example**:
 
 ```python
-delete_confirmation = highlight_instance.delete_highlight(id=123, category_id=456, body_id=789)
+delete_confirmation = highlight_instance.delete_highlight(id=123, category_id=456, keyword="highlight-keyword")
 print(delete_confirmation)
 ```

@@ -119,4 +119,5 @@ media/
 mysql_db/
 .env
 cred.json
+creds.json
 test.py

@@ -20,9 +20,9 @@ class Highlight:
             payload={"keyword": keyword, "category": category_id},
         )
 
-    def delete_highlight(self, id: int, category_id: int, body_id: int) -> dict:
+    def delete_highlight(self, id: int, category_id: int, keyword: str) -> dict:
         return self.__rayyan__.request.request_handler(
             method="DELETE",
             path=f"{REVIEWS_ROUTE}/{id}/highlight",
-            payload={"id": body_id, "category": category_id},
+            payload={"id": keyword, "category": category_id},
         )
