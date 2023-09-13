@@ -1,55 +1,24 @@
-# Rayyan SDK
+# Rayyan Python SDK
 
-## Table of Contents
-
-- [Rayyan SDK](#rayyan-sdk)
-  - [Table of Contents](#table-of-contents)
-  - [Docs](#docs)
-  - [Build](#build)
-  - [Installation](#installation)
-  - [Usage](#usage)
-
-## Docs
-
-- [rayyan](/docs/rayyan.md)
-- [user](/docs/user.md)
-- [duplicates](/docs/duplicates.md)
-- [highlight](/docs/highlight.md)
-- [notes](/docs/notes.md)
-- [review_access](/docs/review_access.md)
-- [review](/docs/review.md)
-- [third_party_auth](/docs/third_party_auth.md)
-- [search](/docs/search.md)
-- [admin](/docs/admin.md)
-
-## Build
-
-To Build Rayyan Python SDK, simply execute the following command
-in a terminal using make file:
-
-```shell
-make build
-```
-
-or simply execute the following command
-in a terminal
-
-```shell
-python setup.py sdist
-```
-
+A Python SDK for Rayyan [HTTP APIs](https://github.com/rayyansys/rayyan-api-docs).
 ## Installation
 
-To install Rayyan Python SDK, simply execute the following command
-in a terminal after you build the sdk first:
+To install the latest stable release of Rayyan Python SDK, execute the following command:
 
 ```shell
-pip install ./dist/rayyan-sdk-0.1.tar.gz
+pip install rayyan-sdk
+```
+
+For the nightly builds, execute the following command:
+
+```shell
+pip install -i https://test.pypi.org/simple/ rayyan-sdk
 ```
 
 ## Usage
 
-To use Rayyan Python SDK, you will need to have a credentials file in JSON format like the one below. You can retrieve such file by signing in to your Rayyan account and going to My Account page.
+To use the SDK, you need to have a credentials file in JSON format like the one below.
+You can retrieve such file by signing in to your Rayyan account and going to My Account page.
 
 ```json
 // creds.json
@@ -65,8 +34,32 @@ Import Rayyan main class and pass the credentials file to it like this:
 rayyan = Rayyan("cred.json")
 ```
 
+> Note: The credentials file should be kept secret and not shared with anyone.
+It acts as a password to your Rayyan account.
+
 To get the authenticated user info:
 
 ```python
 user = rayyan.user.get_info()
 ```
+
+## Documentation
+
+The documentation for Rayyan Python SDK is available on [GitHub](https://github.com/rayyansys/rayyan-api-py/tree/master/docs).
+
+
+## Development
+
+To build Rayyan Python SDK from source, execute the following command in a terminal:
+
+```shell
+git clone https://github.com/rayyansys/rayyan-api-py
+cd rayyan-api-py
+python setup.py develop
+```
+
+## Support
+
+If you have any questions or problems with the SDK,
+please create an issue on [GitHub](https://github.com/rayyansys/rayyan-api-py).
+For questions about Rayyan itself, please use the Rayyan [Help Center](https://help.rayyan.ai/).
