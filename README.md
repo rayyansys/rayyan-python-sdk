@@ -45,8 +45,9 @@ user = rayyan.user.get_info()
 
 ## Documentation
 
-The documentation for Rayyan Python SDK is available on [GitHub](https://github.com/rayyansys/rayyan-api-py/tree/master/docs).
-
+The full documentation for Rayyan Python SDK is available on
+[GitHub](https://github.com/rayyansys/rayyan-api-py/tree/master/docs).
+You can also find a Juptyer notebook with examples here: `rayyan-api.ipynb`.
 
 ## Development
 
