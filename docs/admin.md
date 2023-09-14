@@ -240,11 +240,14 @@ admin.delete_team(123)
 def edit_team(
   self,
   id: int,
-  name: str,
-  capacity: str,
-  new_collaborator_emails: str,
-  new_admin_emails: str,
-  new_viewer_emails: str,
+  name: str = None,
+  capacity: int = None,
+  new_admin_emails: str = None,
+  new_collaborator_emails: str = None,
+  new_viewer_emails: str = None,
+  admin_ids: List[int] = None,
+  collaborator_ids: List[int] = None,
+  viewer_ids: List[int] = None,
 ) -> dict
 ```
 
@@ -256,10 +259,9 @@ Edit a team.
 admin.edit_team(
   123,
   "New name",
-  "10",
-  "test@example.com",
-  "test@example.com",
-  "test@example.com",
+  capacity="10",
+  new_admin_emails="admin1@example.com,admin2@examplr.com",
+  viewer_ids=[42,101]
 )
 ```
 

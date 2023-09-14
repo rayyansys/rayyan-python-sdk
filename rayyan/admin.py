@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from typing import List
 
 from .paths import ADMIN_ROUTE
 
@@ -55,7 +56,7 @@ class Admin:
             method="POST", path=f"{ADMIN_ROUTE}/reviews/{id}/archive.json"
         )
 
-    def list_reviews(self, params: dict) -> dict:
+    def list_reviews(self, filters: dict) -> dict:
         params = {f"q[{key}]": value for key, value in filters.items()}
         return self.__rayyan__.request.request_handler(
             method="GET", path=f"{ADMIN_ROUTE}/reviews.json", params=params
@@ -70,7 +71,7 @@ class Admin:
         return self.__rayyan__.request.request_handler(
             method="PUT",
             path=f"{ADMIN_ROUTE}/reviews/{id}.json",
-            params={"title": title, "description": description},
+            payload={"title": title, "description": description},
         )
 
     def show_review(self, id: int) -> dict:
@@ -92,28 +93,41 @@ class Admin:
     def edit_team(
         self,
         id: int,
-        name: str,
-        capacity: int,
-        new_collaborator_emails: str,
-        new_admin_emails: str,
-        new_viewer_emails: str,
+        name: str = None,
+        capacity: int = None,
+        new_admin_emails: str = None,
+        new_collaborator_emails: str = None,
+        new_viewer_emails: str = None,
+        admin_ids: List[int] = None,
+        collaborator_ids: List[int] = None,
+        viewer_ids: List[int] = None,
     ) -> dict:
+        payload = {
+            "name": name,
+            "capacity": capacity,
+            "new_collaborator_emails": new_collaborator_emails,
+            "new_admin_emails": new_admin_emails,
+            "new_viewer_emails": new_viewer_emails,
+            "admin_ids": admin_ids,
+            "collaborator_ids": collaborator_ids,
+            "viewer_ids": viewer_ids,
+        }
+
+        # Remove None params
+        payload = {k: v for k, v in payload.items() if v != None}
+
         return self.__rayyan__.request.request_handler(
             method="PUT",
             path=f"{ADMIN_ROUTE}/teams/{id}.json",
-            params={
-                "team[name]": name,
-                "team[capacity]": capacity,
-                "team[new_collaborator_emails]": new_collaborator_emails,
-                "team[new_admin_emails]": new_admin_emails,
-                "team[new_viewer_emails]": new_viewer_emails,
+            payload={
+                "team": payload
             },
         )
 
     def create_team(self, name: str, capacity=None) -> dict:
-        payload = {"team[name]": name}
+        payload = {"team": {"name": name}}
         if capacity:
-            payload["team[capacity]"] = capacity
+            payload["team"]["capacity"] = capacity
         return self.__rayyan__.request.request_handler(
             method="POST",
             path=f"{ADMIN_ROUTE}/teams.json",

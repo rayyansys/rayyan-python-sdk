@@ -31,31 +31,19 @@ class Search:
         file: str,
     ) -> dict:
         file_name = file.split("/")[-1]
-        files = [
-            (
-                "file",
-                (
-                    file_name,
-                    open(f"{file}/{file_name}", "rb"),
-                ),
-            )
-        ]
-        return self.__rayyan__.request.request_handler(
-            method="POST",
-            path=url,
-            payload={
-                "search": {
-                    "key": key,
-                    "x-amz-credential": credential,
-                    "x-amz-algorithm": algorithm,
-                    "x-amz-date": date,
-                    "x-amz-signature": signature,
-                    "policy": policy,
-                    "success_action_status": success_action_status,
-                }
-            },
-            body_type="data",
-            files=files,
+        return self.__rayyan__.request.file_uploader(
+            url=url,
+            params=
+            {
+                "key": key,
+                "x-amz-credential": credential,
+                "x-amz-algorithm": algorithm,
+                "x-amz-date": date,
+                "x-amz-signature": signature,
+                "policy": policy,
+                "success_action_status": success_action_status,
+                "file": (file_name, open(file, 'rb'))
+            }
         )
 
     def create(self, review_id: int, s3_key: str, original_filename: str) -> dict:
