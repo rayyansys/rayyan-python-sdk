@@ -1,6 +1,7 @@
 import json
 from typing import TYPE_CHECKING, Dict, Union
 from requests import request
+import requests
 from requests.models import Response
 from requests import Request as RequestModel
 from requests import Session
@@ -8,6 +9,8 @@ from rayyan.conf import CREDENTIAL_KEYS
 from rayyan.errors import InvalidCredentialsError, RefreshTokenExpiredError
 from rayyan.paths import REFRESH_TOKEN_ROUTE
 from requests import PreparedRequest
+from requests_toolbelt.multipart.encoder import MultipartEncoder
+
 
 if TYPE_CHECKING:
     from rayyan.rayyan import Rayyan
@@ -32,7 +35,8 @@ class Request:
             self._refresh_credentials()
             prepared_request.headers["Authorization"] = f"Bearer {self._access_token}"
             response = session.send(prepared_request)
-        if "application/json" in response.headers["Content-Type"]:
+                    
+        if 'application/json' in response.headers.get('Content-Type', ''):
             data = response.json()
         else:
             data = response.text
@@ -84,7 +88,34 @@ class Request:
         prepared_request = session.prepare_request(request)
         response = session.send(prepared_request)
         return self._response_handler(response, session, prepared_request)
+    
+    def file_uploader(
+        self,
+        url: str,
+        headers: Dict[str, str] = {},
+        params: Dict[str, str] = {},
+    ) -> Dict[str, Union[int, str, Dict[str, str]]]:
+        
+        multipart_data = MultipartEncoder(
+            fields=params
+        )
+        headers['Content-Type'] = multipart_data.content_type
+        response = requests.post(url, data=multipart_data, headers=headers)
+        
+        code: int = response.status_code
+        if code >= 200 and code <= 299:
+            return response.text
 
+        response.raise_for_status()
+        reason = response.reason
+        response_body: Dict[str, Union[int, str, Dict[str, str]]] = {
+            "code": code,
+            "message": reason,
+            "data": response.text,
+        }
+
+        return response_body
+    
     def _get_credentials_from_credentials_file(self) -> Dict[str, str]:
         """
         This function reads and returns credentials data from a JSON file after validating it.
