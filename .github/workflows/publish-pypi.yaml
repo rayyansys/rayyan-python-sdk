@@ -1,15 +1,17 @@
-name: Publish to TestPyPI
+name: Publish to PyPI
 on:
   push:
     branches:
       - master
+    tags:
+      - v*
 jobs:
-  testpypi-publish:
-    name: Upload release to TestPyPI
+  pypi-publish:
+    name: Upload release to PyPI
     runs-on: ubuntu-latest
     environment:
-      name: testpypi
-      url: https://test.pypi.org/project/rayyan-sdk/
+      name: pypi
+      url: https://pypi.org/project/rayyan-sdk/
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
@@ -24,9 +26,7 @@ jobs:
         pip install setuptools wheel twine
         python setup.py sdist bdist_wheel
         twine check dist/*
-    - name: Publish package distributions to TestPyPI
+    - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        repository-url: https://test.pypi.org/legacy/
-        skip-existing: true
         print-hash: true
