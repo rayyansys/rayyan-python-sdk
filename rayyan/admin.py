@@ -93,14 +93,14 @@ class Admin:
     def edit_team(
         self,
         id: int,
-        name: str,
-        capacity: int,
-        new_admin_emails: str,
-        new_collaborator_emails: str,
-        new_viewer_emails: str,
-        admin_ids: List[int],
-        collaborator_ids: List[int],
-        viewer_ids: List[int],
+        name: str = None,
+        capacity: int = None,
+        new_admin_emails: str = None,
+        new_collaborator_emails: str = None,
+        new_viewer_emails: str = None,
+        admin_ids: List[int] = None,
+        collaborator_ids: List[int] = None,
+        viewer_ids: List[int] = None,
     ) -> dict:
         payload = {
             "name": name,
