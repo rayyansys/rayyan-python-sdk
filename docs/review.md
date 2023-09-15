@@ -139,8 +139,6 @@ review_results = review_instance.results(review_id, result_params)
 print(review_results)
 ```
 
-Of course! Here's the continuation of the documentation with examples for the remaining methods:
-
 ### Customize Review
 
 ```python
