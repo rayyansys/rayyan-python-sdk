@@ -1,6 +1,7 @@
 # Rayyan Python SDK
 
-A Python SDK for Rayyan [HTTP APIs](https://github.com/rayyansys/rayyan-api-docs).
+A Python SDK for [Rayyan](https://www.rayyan.ai/), the popular systematic reviews platform.
+It is a wrapper around the [HTTP APIs](https://github.com/rayyansys/rayyan-api-docs) of Rayyan.
 ## Installation
 
 To install the latest stable release of Rayyan Python SDK, execute the following command:
@@ -18,7 +19,8 @@ pip install -i https://test.pypi.org/simple/ rayyan-sdk
 ## Usage
 
 To use the SDK, you need to have a credentials file in JSON format like the one below.
-You can retrieve such file by signing in to your Rayyan account and going to My Account page.
+You can retrieve such file by signing in to your Rayyan account
+(create a free account if you don't have one) and visiting My Account page.
 
 ```json
 // creds.json
@@ -45,22 +47,24 @@ user = rayyan.user.get_info()
 
 ## Documentation
 
-The full documentation for Rayyan Python SDK is available on
-[GitHub](https://github.com/rayyansys/rayyan-api-py/tree/master/docs).
-You can also find a Juptyer notebook with examples here: `rayyan-api.ipynb`.
+The full documentation for Rayyan Python SDK is available in the
+[docs](https://github.com/rayyansys/rayyan-python-sdk/tree/master/docs) folder on GitHub.
+You can also find a Juptyer notebook with examples in
+[rayyan-api.ipynb](https://github.com/rayyansys/rayyan-python-sdk/blob/master/rayyan-api.ipynb).
 
 ## Development
 
 To build Rayyan Python SDK from source, execute the following command in a terminal:
 
 ```shell
-git clone https://github.com/rayyansys/rayyan-api-py
-cd rayyan-api-py
+git clone https://github.com/rayyansys/rayyan-python-sdk
+cd rayyan-python-sdk
 python setup.py develop
 ```
 
 ## Support
 
 If you have any questions or problems with the SDK,
-please create an issue on [GitHub](https://github.com/rayyansys/rayyan-api-py).
+please check existing issues on [GitHub](https://github.com/rayyansys/rayyan-python-sdk/issues),
+or open a new issue if needed.
 For questions about Rayyan itself, please use the Rayyan [Help Center](https://help.rayyan.ai/).
