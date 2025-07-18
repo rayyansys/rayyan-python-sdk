@@ -36,7 +36,7 @@ class Review:
             "team_id": int,
         },
     ) -> Dict[str, str]:
-        return self.__rayyan__._request.request_handler(
+        return self.__rayyan__.request.request_handler(
             method="POST",
             path=REVIEWS_ROUTE,
             payload={"review": review},
