@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Dict
+from typing import TYPE_CHECKING, Dict, Any, List, Literal, Optional, TypedDict
+import json
 
 from .paths import REVIEWS_ROUTE
 
@@ -7,6 +8,49 @@ if TYPE_CHECKING:
     from rayyan.rayyan import Rayyan
 else:
     Rayyan = None
+
+
+
+
+
+class ExportFilters(TypedDict, total=False):
+    author_format: Literal["lf", "fl"]
+    include_abstracts: int
+    include_decisions: int
+    include_labels: int
+    include_exclusion_reasons: int
+    include_user_notes: int
+    include_fulltexts: int
+    include_questions: int
+    article_ids: List[int]
+    mode: str
+    searches: List[int]
+    highlights_1: List[str]
+    highlights_2: List[str]
+    language: List[str]
+    keyphrases: List[str]
+    locations: List[str]
+    journal: List[str]
+    authors: List[str]
+    year: List[int]
+    publication_types: List[str]
+    user_labels: List[str]
+    exclusion_labels: List[str]
+    abstract_languages: List[str]
+    fulltext_types: List[str]
+    customized_by: List[str]
+    decision_at_least: int
+    decision_at_most: int
+    dedup_result: int
+    dedup_job_id: int
+    dedup_result_cluster_id: int
+    exact_matches: int
+    pico_participants: List[str]
+    pico_intervention: List[str]
+    pico_control: List[str]
+    pico_outcome: List[str]
+    stages: List[str]
+
 
 
 class Review:
@@ -46,6 +90,48 @@ class Review:
         return self.__rayyan__.request.request_handler(
             method="GET", path=f"{REVIEWS_ROUTE}/{id}/export"
         )
+
+    def export(
+        self,
+        review_id: int,
+        export_format: Literal["csv", "ris", "bib", "enw"],
+        filters: Optional[ExportFilters] = None
+    ) -> Dict[str, Any]:
+        """
+        Export a review in one of the allowed formats: csv, ris, bib, enw.
+
+        Args:
+            review_id: The ID of the review to export.
+            export_format: Must be one of "csv", "ris", "bib", "enw".
+            filters: Optional dict of filters and flags for export.
+
+        Returns:
+            API response as dict.
+        """
+
+        # Default include_* values
+        params: Dict[str, Any] = {
+            "include_abstracts": 1,
+            "include_decisions": 1,
+            "include_labels": 1,
+            "include_exclusion_reasons": 1,
+            "include_user_notes": 1,
+        }
+
+        if filters:
+            for key, value in filters.items():
+                if isinstance(value, list):
+                    params[key] = json.dumps(value)
+                else:
+                    params[key] = value
+
+        return self.__rayyan__.request.request_handler(
+            method="GET",
+            path=f"{REVIEWS_ROUTE}/{review_id}/export.{export_format}",
+            params=params,
+        )
+
+
 
     def copy(
         self,
