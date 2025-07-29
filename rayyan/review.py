@@ -52,6 +52,16 @@ class ExportFilters(TypedDict, total=False):
     stages: List[str]
 
 
+def build_query(filters: dict) -> list[tuple[str, str]]:
+    query = []
+    for key, value in filters.items():
+        if isinstance(value, list):
+            for v in value:
+                query.append((f"{key}[]", str(v)))
+        else:
+            query.append((key, str(value)))
+    return query
+
 
 class Review:
     def __init__(self, rayyan: Rayyan):
@@ -84,11 +94,6 @@ class Review:
             method="POST",
             path=REVIEWS_ROUTE,
             payload={"review": review},
-        )
-
-    def export(self, id: int) -> Dict[str, str]:
-        return self.__rayyan__.request.request_handler(
-            method="GET", path=f"{REVIEWS_ROUTE}/{id}/export"
         )
 
     def export(
@@ -125,6 +130,7 @@ class Review:
                 else:
                     params[key] = value
 
+        params = build_query(params)
         return self.__rayyan__.request.request_handler(
             method="GET",
             path=f"{REVIEWS_ROUTE}/{review_id}/export.{export_format}",
