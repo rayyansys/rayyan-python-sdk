@@ -3,11 +3,7 @@ from typing import List
 
 from .paths import ADMIN_ROUTE
 
-
-if TYPE_CHECKING:
-    from rayyan.rayyan import Rayyan
-else:
-    Rayyan = None
+from rayyan.types import RayyanProtocol as Rayyan
 
 
 class Admin:

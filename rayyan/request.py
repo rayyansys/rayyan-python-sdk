@@ -10,13 +10,7 @@ from rayyan.errors import InvalidCredentialsError, RefreshTokenExpiredError
 from rayyan.paths import REFRESH_TOKEN_ROUTE
 from requests import PreparedRequest
 from requests_toolbelt.multipart.encoder import MultipartEncoder
-
-
-if TYPE_CHECKING:
-    from rayyan.rayyan import Rayyan
-
-else:
-    Rayyan = None
+from rayyan.types import RayyanProtocol as Rayyan
 
 
 class Request:

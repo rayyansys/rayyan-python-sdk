@@ -2,10 +2,7 @@ from .paths import DELETE_USER_ROUTE, REVOKE_TOKEN_ROUTE, USER_INFO_ROUTE
 from typing import TYPE_CHECKING, Dict, Union
 
 
-if TYPE_CHECKING:
-    from rayyan.rayyan import Rayyan
-else:
-    Rayyan = None
+from rayyan.types import RayyanProtocol as Rayyan
 
 
 class User:

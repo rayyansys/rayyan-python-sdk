@@ -3,10 +3,8 @@ from typing import TYPE_CHECKING, Dict
 from .paths import THIRD_PARTY_AUTH
 from .conf import MENDELEY
 
-if TYPE_CHECKING:
-    from rayyan.rayyan import Rayyan
-else:
-    Rayyan = None
+from rayyan.types import RayyanProtocol as Rayyan
+
 
 ALLOWED_PROVIDERS = [MENDELEY]
 

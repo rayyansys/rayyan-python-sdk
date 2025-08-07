@@ -3,10 +3,7 @@ from typing import TYPE_CHECKING
 from .paths import REVIEWS_ROUTE
 
 
-if TYPE_CHECKING:
-    from rayyan.rayyan import Rayyan
-else:
-    Rayyan = None
+from rayyan.types import RayyanProtocol as Rayyan
 
 
 class Search:
