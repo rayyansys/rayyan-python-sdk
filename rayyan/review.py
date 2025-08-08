@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Dict
+from typing import Dict
 
 from .paths import REVIEWS_ROUTE
 

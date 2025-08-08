@@ -1,4 +1,3 @@
-from typing import TYPE_CHECKING
 from typing import List
 
 from .paths import ADMIN_ROUTE

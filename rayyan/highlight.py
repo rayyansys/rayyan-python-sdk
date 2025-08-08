@@ -1,5 +1,3 @@
-from typing import TYPE_CHECKING
-
 from .paths import REVIEWS_ROUTE
 
 from rayyan.types import RayyanProtocol as Rayyan

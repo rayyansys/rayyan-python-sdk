@@ -1,5 +1,5 @@
 from .paths import DELETE_USER_ROUTE, REVOKE_TOKEN_ROUTE, USER_INFO_ROUTE
-from typing import TYPE_CHECKING, Dict, Union
+from typing import Dict, Union
 
 
 from rayyan.types import RayyanProtocol as Rayyan
