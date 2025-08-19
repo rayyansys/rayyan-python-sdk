@@ -1,10 +1,38 @@
-from typing import Dict
+from typing import Dict, Any, List, Literal, Optional, TypedDict
+import json
 
 from .paths import REVIEWS_ROUTE
 
 
 from rayyan.types import RayyanProtocol as Rayyan
 
+
+
+
+class ExportFilters(TypedDict, total=False):
+    author_format: Literal["lf", "fl"]
+    include_abstracts: int
+    include_decisions: int
+    include_labels: int
+    include_exclusion_reasons: int
+    include_user_notes: int
+    include_fulltexts: int
+    include_questions: int
+    all_decisions: int
+    all_labels: int
+    all_notes: int
+    include_fields: List[str]
+
+
+def build_query(filters: dict) -> list[tuple[str, str]]:
+    query = []
+    for key, value in filters.items():
+        if isinstance(value, list):
+            for v in value:
+                query.append((f"{key}[]", str(v)))
+        else:
+            query.append((key, str(value)))
+    return query
 
 
 class Review:
@@ -40,10 +68,41 @@ class Review:
             payload={"review": review},
         )
 
-    def export(self, id: int) -> Dict[str, str]:
+    def export(
+        self,
+        review_id: int,
+        export_format: Literal["csv", "ris", "bib", "enw"],
+        filters: Optional[ExportFilters] = None
+    ) -> Dict[str, Any]:
+        """
+        Export a review in one of the allowed formats: csv, ris, bib, enw.
+
+        Args:
+            review_id: The ID of the review to export.
+            export_format: Must be one of "csv", "ris", "bib", "enw".
+            filters: Optional dict of filters and flags for export.
+
+        Returns:
+            API response as dict.
+        """
+
+        params: Dict[str, Any] = {}
+
+        if filters:
+            for key, value in filters.items():
+                if isinstance(value, list):
+                    params[key] = json.dumps(value)
+                else:
+                    params[key] = value
+
+        params = build_query(params)
         return self.__rayyan__.request.request_handler(
-            method="GET", path=f"{REVIEWS_ROUTE}/{id}/export"
+            method="GET",
+            path=f"{REVIEWS_ROUTE}/{review_id}/export.{export_format}",
+            params=params,
         )
+
+
 
     def copy(
         self,
