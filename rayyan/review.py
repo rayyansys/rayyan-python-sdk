@@ -86,14 +86,7 @@ class Review:
             API response as dict.
         """
 
-        # Default include_* values
-        params: Dict[str, Any] = {
-            "include_abstracts": 1,
-            "include_decisions": 1,
-            "include_labels": 1,
-            "include_exclusion_reasons": 1,
-            "include_user_notes": 1,
-        }
+        params: Dict[str, Any] = {}
 
         if filters:
             for key, value in filters.items():
