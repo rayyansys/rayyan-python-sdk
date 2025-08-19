@@ -11,8 +11,6 @@ else:
 
 
 
-
-
 class ExportFilters(TypedDict, total=False):
     author_format: Literal["lf", "fl"]
     include_abstracts: int
@@ -22,34 +20,10 @@ class ExportFilters(TypedDict, total=False):
     include_user_notes: int
     include_fulltexts: int
     include_questions: int
-    article_ids: List[int]
-    mode: str
-    searches: List[int]
-    highlights_1: List[str]
-    highlights_2: List[str]
-    language: List[str]
-    keyphrases: List[str]
-    locations: List[str]
-    journal: List[str]
-    authors: List[str]
-    year: List[int]
-    publication_types: List[str]
-    user_labels: List[str]
-    exclusion_labels: List[str]
-    abstract_languages: List[str]
-    fulltext_types: List[str]
-    customized_by: List[str]
-    decision_at_least: int
-    decision_at_most: int
-    dedup_result: int
-    dedup_job_id: int
-    dedup_result_cluster_id: int
-    exact_matches: int
-    pico_participants: List[str]
-    pico_intervention: List[str]
-    pico_control: List[str]
-    pico_outcome: List[str]
-    stages: List[str]
+    all_decisions: int
+    all_labels: int
+    all_notes: int
+    include_fields: List[str]
 
 
 def build_query(filters: dict) -> list[tuple[str, str]]:
