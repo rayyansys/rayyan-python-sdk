@@ -1,13 +1,11 @@
-from typing import TYPE_CHECKING, Dict, Any, List, Literal, Optional, TypedDict
+from typing import Dict, Any, List, Literal, Optional, TypedDict
 import json
 
 from .paths import REVIEWS_ROUTE
 
 
-if TYPE_CHECKING:
-    from rayyan.rayyan import Rayyan
-else:
-    Rayyan = None
+from rayyan.types import RayyanProtocol as Rayyan
+
 
 
 
