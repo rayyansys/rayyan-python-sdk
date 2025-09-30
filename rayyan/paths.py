@@ -9,5 +9,9 @@ REVOKE_TOKEN_ROUTE = "/oauth/revoke"
 THIRD_PARTY_AUTH = "/api/v1/third_party_auth"
 # ________review________
 REVIEWS_ROUTE = "/api/v1/reviews"
+# ________fulltext________
+FULLTEXT_ROUTE = "/api/v1/fulltexts"
+# ________my library________
+MYLIBRARY_ROUTE = "/api/v1/my_library/import"
 # ________admin________
 ADMIN_ROUTE = "/admin"
