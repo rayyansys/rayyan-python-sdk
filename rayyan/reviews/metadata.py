@@ -37,7 +37,7 @@ class ReviewMetadata:
                 "type": type_
             }
         }
-        return self._request("POST", f"{REVIEWS_ROUTE}/{review_id}/stages", json=payload)
+        return self._request("POST", f"{REVIEWS_ROUTE}/{review_id}/stages", payload=payload)
 
     def import_articles_to_stage(
         self, review_id: int, stage_id: int, extra: Optional[dict] = None
@@ -59,5 +59,5 @@ class ReviewMetadata:
         return self._request(
             "POST",
             f"{REVIEWS_ROUTE}/{review_id}/stages/{stage_id}/import",
-            json={"extra": extra}
+            payload={"extra": extra}
         )
