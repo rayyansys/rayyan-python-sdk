@@ -6,6 +6,8 @@ import requests
 from rayyan.types import RayyanProtocol as Rayyan
 
 
+
+
 class MyLib:
     def __init__(self, rayyan: Rayyan):
         self.__rayyan__ = rayyan
@@ -113,7 +115,6 @@ class MyLib:
         parts = path.strip("/").split("/")
         created = []
         checked = set()
-
         current_path = ""
         for part in parts:
             current_path = f"{current_path}/{part}"
@@ -122,10 +123,9 @@ class MyLib:
             checked.add(current_path)
 
             if not self._path_exists(current_path):
-                # Create the missing directory
                 self.__rayyan__.request.request_handler(
                     method="POST",
-                    path=current_path,
+                    path=current_path + "/",
                 )
                 created.append(current_path)
 
@@ -190,18 +190,7 @@ class MyLib:
 
         # Ensure parent directories exist (recursive / iterative)
         self.create_directory(parent_dir)
-
-        # Request presigned URL
-        presign_resp = self.__rayyan__.request.request_handler(
-            method="POST",
-            path=path,
-            data="",
-            headers={"accept": "application/json"}
-        )
-
-        presigned_url = presign_resp.get("url")
-        fields = presign_resp.get("fields")
-
+        presigned_url, fields = self.get_presigned_url(path)
         if not presigned_url or not fields:
             raise RuntimeError("Invalid presigned URL response from server.")
 
@@ -216,7 +205,6 @@ class MyLib:
 
         return {
             "message": f"File '{path}' uploaded successfully.",
-            "presign_response": presign_resp,
             "upload_response": response.text
         }
 
@@ -269,6 +257,27 @@ class MyLib:
         }
 
 
+    def get_presigned_url(self, path: str) -> dict:
+        """
+        Obtain a presigned URL for uploading a file to My Library.
+
+        Args:
+            path (str): Target file path in My Library (e.g., '/a/b/c.txt').
+        Returns:
+            dict: Response containing presigned URL and fields.
+        """
+
+        # Request presigned URL
+        presign_resp = self.__rayyan__.request.request_handler(
+            method="POST",
+            path=path,
+            headers={"accept": "application/json"}
+        )
+
+        presigned_url = presign_resp.get("url")
+        fields = presign_resp.get("fields")
+        return presigned_url, fields
+
     def _path_exists(self, path: str) -> bool:
         """
         Check if a path exists in My Library, whether it's a file or directory.
@@ -284,18 +293,10 @@ class MyLib:
             return True
 
         # First, check if it's a directory
-        try:
-            self.list_directory(path, current_dir=True)
+        _files = self.list_directory(path, current_dir=True)
+        if _files.get("total", 0) > 0:
             return True
-        except Exception:
-            pass
-
-        # Then, check if it's a file
-        try:
-            self.download_file(path)
-            return True
-        except Exception:
-            return False
+        return False
 
     def _normalize_path(self, path: str) -> str:
         """
