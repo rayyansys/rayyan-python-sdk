@@ -11,19 +11,19 @@ class Duplicates:
         self.__rayyan__ = rayyan
 
     def get_duplicate(self, id, article_id) -> Dict[str, str]:
-        return self.__rayyan__.request.request_handler(
+        return self._request(
             method="GET", path=f"{REVIEWS_ROUTE}/{id}/duplicates/{article_id}"
         )
 
     def add_duplicate(self, id) -> Dict[str, str]:
-        return self.__rayyan__.request.request_handler(
+        return self._request(
             method="POST", path=f"{REVIEWS_ROUTE}/{id}/duplicates/"
         )
 
     def update_duplicate(
         self, id, article_id, duplicate_action: int, isDeletedArticle: bool = False
     ) -> Dict[str, str]:
-        return self.__rayyan__.request.request_handler(
+        return self._request(
             method="PATCH",
             payload={
                 "duplicate_action": duplicate_action,
