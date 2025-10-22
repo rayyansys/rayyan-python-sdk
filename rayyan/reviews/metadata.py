@@ -54,7 +54,7 @@ class ReviewMetadata:
             dict: Import response.
         """
         if extra is None:
-            extra = {"mode": "included"}  # default fallback
+            extra = {}  # default fallback
 
         return self._request(
             "POST",
