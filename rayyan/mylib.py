@@ -96,14 +96,11 @@ class MyLib:
 
     def create_directory(self, path: str) -> dict:
         """
-        Recursively (iteratively) creates directories in My Library like `mkdir -p`,
-        avoiding redundant API calls and handling deep paths efficiently.
-
         Args:
-            path (str): Directory path (e.g., '/a/b/c////')
+            path (str): Directory path (e.g., '/a')
 
         Returns:
-            dict: Response for the final directory creation.
+            dict: Response for the creating dir.
         """
         path = self._normalize_path(path)
 
@@ -111,27 +108,10 @@ class MyLib:
         if path == "/":
             return {"message": "Root directory already exists."}
 
-        # Split into parts and create iteratively
-        parts = path.strip("/").split("/")
-        created = []
-        checked = set()
-        current_path = ""
-        for part in parts:
-            current_path = f"{current_path}/{part}"
-            if current_path in checked:
-                continue
-            checked.add(current_path)
-
-            if not self._path_exists(current_path):
-                self.__rayyan__.request.request_handler(
-                    method="POST",
-                    path=current_path + "/",
-                )
-                created.append(current_path)
-
-        if not created:
-            return {"message": f"Directory '{path}' already exists."}
-        return {"message": f"Created {len(created)} directories.", "created": created}
+        return self.__rayyan__.request.request_handler(
+            method="POST",
+            path=path + "/",
+        )
 
     def download_file(self, path: str) -> dict:
         """
@@ -185,11 +165,6 @@ class MyLib:
         if path.endswith("/"):
             raise ValueError("File path must not have a trailing slash.")
 
-        # Determine parent directory
-        parent_dir = "/" if "/" not in path[1:] else path.rsplit("/", 1)[0]
-
-        # Ensure parent directories exist (recursive / iterative)
-        self.create_directory(parent_dir)
         presigned_url, fields = self.get_presigned_url(path)
         if not presigned_url or not fields:
             raise RuntimeError("Invalid presigned URL response from server.")
@@ -212,15 +187,13 @@ class MyLib:
         """
         Copy or move a file or directory in My Library.
 
-        Automatically creates missing parent directories of the target path.
-
         Args:
             path (str): Source file or directory path (must not have trailing slash).
             new_path (str): Target full path (must include filename or directory name, no trailing slash).
             move (bool): True to move, False to copy.
 
         Returns:
-            dict: Structured response including created parent directories and API response.
+            dict: Structured response including API response.
         """
         if not path or not new_path:
             raise ValueError("Both 'path' and 'new_path' must be provided.")
@@ -232,14 +205,6 @@ class MyLib:
         if path.endswith("/") or new_path.endswith("/"):
             raise ValueError("Paths must not have trailing slashes.")
 
-        # Verify source exists
-        if not self._path_exists(path):
-            raise FileNotFoundError(f"Source path '{path}' does not exist.")
-
-        # Ensure parent directories of target exist
-        parent_dir = "/" if "/" not in new_path[1:] else new_path.rsplit("/", 1)[0]
-        created_dirs = self.create_directory(parent_dir).get("created", [])
-
         # Perform copy or move via PUT request
         params = {"new_path": new_path, "move": str(move).lower()}
         api_response = self.__rayyan__.request.request_handler(
@@ -249,7 +214,6 @@ class MyLib:
         )
 
         return {
-            "created_dirs": created_dirs,
             "operation": "move" if move else "copy",
             "source": path,
             "destination": new_path,
@@ -277,26 +241,6 @@ class MyLib:
         presigned_url = presign_resp.get("url")
         fields = presign_resp.get("fields")
         return presigned_url, fields
-
-    def _path_exists(self, path: str) -> bool:
-        """
-        Check if a path exists in My Library, whether it's a file or directory.
-
-        Args:
-            path (str): Path to check.
-
-        Returns:
-            bool: True if path exists, False otherwise.
-        """
-        path = self._normalize_path(path)
-        if path == "/":
-            return True
-
-        # First, check if it's a directory
-        _files = self.list_directory(path, current_dir=True)
-        if _files.get("total", 0) > 0:
-            return True
-        return False
 
     def _normalize_path(self, path: str) -> str:
         """
