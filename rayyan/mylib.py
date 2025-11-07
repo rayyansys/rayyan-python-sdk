@@ -77,12 +77,10 @@ class MyLib:
         if not path:
             raise ValueError("File path cannot be empty.")
         path = self._normalize_path(path)
-        if path.endswith("/"):
-            raise ValueError("File path must not have a trailing slash.")
 
         presigned_url, fields = self.get_presigned_url(path)
         if not presigned_url or not fields:
-            raise RuntimeError("Invalid presigned URL response.")
+            raise RuntimeError("Empty presigned URL response.")
 
         with open(local_file_path, "rb") as f:
             files = {"file": (os.path.basename(local_file_path), f)}
@@ -102,9 +100,6 @@ class MyLib:
 
         path = self._normalize_path(path)
         new_path = self._normalize_path(new_path)
-
-        if path.endswith("/") or new_path.endswith("/"):
-            raise ValueError("Paths must not have trailing slashes.")
 
         params = {"new_path": new_path, "move": str(move).lower()}
         api_response = self.__rayyan__.request.request_handler(
