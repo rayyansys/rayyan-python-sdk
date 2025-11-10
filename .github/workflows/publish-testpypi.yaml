@@ -23,7 +23,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
         python setup.py sdist bdist_wheel
-        twine check dist/*
+        twine check --verbose dist/*
     - name: Publish package distributions to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
