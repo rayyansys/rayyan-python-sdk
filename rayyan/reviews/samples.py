@@ -3,7 +3,7 @@ from rayyan.paths import REVIEWS_ROUTE
 
 
 class ReviewSamples:
-    def create_sample(
+    def create_samples(
         self,
         review_id: int,
         samples: List[Dict[str, Any]],
