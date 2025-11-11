@@ -30,3 +30,4 @@ jobs:
         repository-url: https://test.pypi.org/legacy/
         skip-existing: true
         print-hash: true
+        verbose: true
