@@ -23,10 +23,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
         python setup.py sdist bdist_wheel
-        twine check --verbose dist/*
+        twine check dist/*
     - name: Publish package distributions to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
         skip-existing: true
         print-hash: true
+        verbose: true
