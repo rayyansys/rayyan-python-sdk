@@ -15,7 +15,7 @@ class Review:
 
 ```python
 from rayyan import Rayyan
-from rayyan.review import Review
+from rayyan.reviews import Review
 
 rayyan = Rayyan("cred.json")
 review_instance = Review(rayyan)

@@ -9,6 +9,7 @@ from .articles import ReviewArticles
 from .customizations import ReviewCustomizations
 from .metadata import ReviewMetadata
 from .fulltext import ReviewFulltext
+from .embeddings import ReviewEmbeddings
 from rayyan.duplicates import Duplicates
 
 class Review(
@@ -23,6 +24,7 @@ class Review(
     ReviewCustomizations,
     ReviewMetadata,
     ReviewFulltext,
+    ReviewEmbeddings,
     Duplicates,
 ):
     """Facade combining all review-related mixins into a single client class.
