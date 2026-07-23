@@ -45,9 +45,10 @@ class ReviewCustomizations:
         key: str = "included",
         allow_string_value: bool = True,
     ) -> Dict[str, Any]:
-        """Answer a data-extraction / screening question for a single article.
+        """Answer a data-extraction question for a single article.
 
-        ``scope`` is the question's ``answer_key`` (of the form
+        The question belongs to a stage, so ``scope`` is the question's
+        ``answer_key`` (of the form
         ``__SYSTEM__STAGE__<stage_id>__QUESTION__<question_id>``). ``answer`` is
         the value (or list of values) to record; it is encoded into the ``plan``
         payload the API expects, i.e. ``{key: '[{"text": <value>}, ...]'}``.
