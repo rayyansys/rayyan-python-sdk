@@ -82,7 +82,7 @@ class ReviewCustomizations:
         params = {"key": key, "value": value, "article_ids": article_ids}
         return self._request("POST", f"{REVIEWS_ROUTE}/{id}/customize", params=params)
 
-    def _toggle_customization(
+    def _set_customization(
         self,
         id: int,
         article_ids: Union[str, List[Any]],
@@ -91,6 +91,7 @@ class ReviewCustomizations:
     ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """Add or remove a keyed customization (label/reason) on articles.
 
+        This sets the given ``key`` to ``value``.
         Adding uses the bulk endpoint (``{article_ids, key, value}``) in a single
         request. Removing uses the per-article ``plan`` form
         (``{article_id, plan: {key: value}}``) applied to each article, since the
@@ -121,7 +122,7 @@ class ReviewCustomizations:
         is ``1`` to add the label and ``-1`` to remove it. ``article_ids`` may be
         a list/tuple of IDs or an already comma-separated string.
         """
-        return self._toggle_customization(
+        return self._set_customization(
             id=id,
             article_ids=article_ids,
             key=label,
@@ -142,7 +143,7 @@ class ReviewCustomizations:
         is ``1`` to add the reason and ``-1`` to remove it. ``article_ids`` may be
         a list/tuple of IDs or an already comma-separated string.
         """
-        return self._toggle_customization(
+        return self._set_customization(
             id=id,
             article_ids=article_ids,
             key=f"{EXCLUSION_REASON_PREFIX}{reason}",
