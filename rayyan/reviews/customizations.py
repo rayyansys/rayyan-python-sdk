@@ -8,16 +8,18 @@ EXCLUSION_REASON_PREFIX = "__EXR__"
 # Value used to remove a customization (label/reason) from an article.
 REMOVE_VALUE = -1
 
-# Template for a data-extraction question's answer_key (the customization
-# "scope"), built from its stage and question IDs.
-STAGE_QUESTION_ANSWER_KEY_TEMPLATE = "__SYSTEM__STAGE__{stage_id}__QUESTION__{question_id}"
+# Template for a stage-level customization "scope", built from a stage ID.
+STAGE_SCOPE_TEMPLATE = "__SYSTEM__STAGE__{stage_id}"
+
+
+def stage_scope(stage_id: Any) -> str:
+    """Build a stage-level customization scope from its stage ID."""
+    return STAGE_SCOPE_TEMPLATE.format(stage_id=stage_id)
 
 
 def stage_question_answer_key(stage_id: Any, question_id: Any) -> str:
     """Build a data-extraction question's answer_key (scope) from its IDs."""
-    return STAGE_QUESTION_ANSWER_KEY_TEMPLATE.format(
-        stage_id=stage_id, question_id=question_id
-    )
+    return f"{stage_scope(stage_id)}__QUESTION__{question_id}"
 
 
 def _to_article_ids_list(article_ids: Union[str, List[Any]]) -> List[Any]:
@@ -81,6 +83,7 @@ class ReviewCustomizations:
         key: str,
         value: int,
         article_ids: Union[str, List[Any]],
+        stage_id: Optional[Any] = None,
     ) -> Dict[str, Any]:
         """Apply a customization (e.g. a screening decision) to many articles at once.
 
@@ -88,10 +91,15 @@ class ReviewCustomizations:
         string; it is normalized to the comma-separated string the API expects.
         For screening decisions, ``key`` is typically ``"included"`` and ``value``
         is ``1`` (include), ``0`` (maybe) or ``-1`` (exclude).
+
+        When ``stage_id`` is given, the customization is scoped to that stage (so
+        the decision is recorded for the stage rather than at the review level).
         """
         if isinstance(article_ids, (list, tuple)):
             article_ids = ", ".join(str(article_id) for article_id in article_ids)
-        params = {"key": key, "value": value, "article_ids": article_ids}
+        params: Dict[str, Any] = {"key": key, "value": value, "article_ids": article_ids}
+        if stage_id is not None:
+            params["scope"] = stage_scope(stage_id)
         return self._request("POST", f"{REVIEWS_ROUTE}/{id}/customize", params=params)
 
     def _set_customization(
