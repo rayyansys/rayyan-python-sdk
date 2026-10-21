@@ -16,7 +16,20 @@ class ReviewMetadata:
         return self._request("POST", f"{REVIEWS_ROUTE}/{id}/unarchive")
 
     def blind(self, id: int) -> Dict[str, Any]:
+        """Toggle blind mode on a review and return the new `is_blind` value."""
         return self._request("POST", f"{REVIEWS_ROUTE}/{id}/blind")
+
+    def set_blind(self, id: int, blind: bool) -> Dict[str, Any]:
+        """Set blind mode to `blind`, toggling only when it differs.
+
+        `blind()` flips the current state, so calling it twice undoes itself;
+        this reads the review first and is safe to repeat.
+        """
+        current = bool(self.get(id).get("is_blind"))
+        if current == blind:
+            return {"is_blind": current, "changed": False}
+        result = self.blind(id)
+        return {"is_blind": bool(result.get("is_blind")), "changed": True}
 
     def create_stage(self, review_id: int, name: str, phase: str, type_: str) -> Dict[str, Any]:
         """Create a new stage in a review.

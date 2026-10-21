@@ -310,7 +310,7 @@ print(unarchive_result)
 def blind(self, id: int) -> Dict[str, str]:
 ```
 
-Blind a review.
+Toggle blind mode on a review. Each call flips the current state and returns the new `is_blind` value.
 
 **Example:**
 
@@ -318,4 +318,19 @@ Blind a review.
 review_id = 123
 blind_result = review_instance.blind(review_id)
 print(blind_result)
+```
+
+### Set Blind Mode
+
+```python
+def set_blind(self, id: int, blind: bool) -> Dict[str, Any]:
+```
+
+Set blind mode to a specific value. Unlike `blind()`, it reads the review first and only toggles when the state differs, so it is safe to repeat. Returns `{"is_blind": bool, "changed": bool}`.
+
+**Example:**
+
+```python
+result = review_instance.set_blind(123, blind=False)
+print(result)  # {"is_blind": False, "changed": True}
 ```

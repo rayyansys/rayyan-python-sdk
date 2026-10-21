@@ -55,21 +55,21 @@ update_confirmation = review_access_instance.update_access(id=123, role_id=789, 
 print(update_confirmation)
 ```
 
-### `invite(id: int, user_id: int, user_emails: list, user_reason: str) -> dict`
+### `invite(id: int, role_id: int, user_emails: list, user_reason: str = None) -> dict`
 
 Invite users to collaborate on a review.
 
 - `id` (type: int): The review identifier.
-- `user_id` (type: int): The ID of the user initiating the invitation.
+- `role_id` (type: int): The role to grant: 2 Collaborator, 3 Viewer, 4 Translator, 5 Administrator, 6 Reviewer.
 - `user_emails` (type: list): List of user emails to invite.
-- `user_reason` (type: str): The reason for inviting users.
+- `user_reason` (type: str, optional): The reason for inviting users. It is stored on accounts created by the invitation.
 
 **Returns**: A dictionary confirming the invitation.
 
 **Example**:
 
 ```python
-invite_confirmation = review_access_instance.invite(id=123, user_id=456, user_emails=["user3@example.com"], user_reason="Collaboration on data analysis.")
+invite_confirmation = review_access_instance.invite(id=123, role_id=6, user_emails=["user3@example.com"], user_reason="Collaboration on data analysis.")
 print(invite_confirmation)
 ```
 

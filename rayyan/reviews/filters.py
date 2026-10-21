@@ -7,6 +7,7 @@ class ExportFilters(TypedDict, total=False):
     include_decisions: int
     include_labels: int
     include_exclusion_reasons: int
+    include_exclusion_reasons_col: int
     include_user_notes: int
     include_fulltexts: int
     include_questions: int

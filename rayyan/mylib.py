@@ -72,8 +72,11 @@ class MyLib:
             path=path
         )
 
-    def upload_file(self, path: str, local_file_path: str) -> dict:
-        """Upload a local file to My Library using a presigned URL."""
+    def upload_file(self, path: str, local_file_path: str, timeout: float = 4) -> dict:
+        """Upload a local file to My Library using a presigned URL.
+
+        `timeout` is the upload request timeout in seconds; raise it for large files.
+        """
         if not path:
             raise ValueError("File path cannot be empty.")
         path = self._normalize_path(path)
@@ -84,7 +87,7 @@ class MyLib:
 
         with open(local_file_path, "rb") as f:
             files = {"file": (os.path.basename(local_file_path), f)}
-            response = requests.post(presigned_url, data=fields, files=files, timeout=4)
+            response = requests.post(presigned_url, data=fields, files=files, timeout=timeout)
             if not response.ok:
                 raise RuntimeError(f"Upload failed: {response.status_code} {response.text}")
 
