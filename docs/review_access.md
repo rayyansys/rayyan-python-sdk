@@ -55,22 +55,21 @@ update_confirmation = review_access_instance.update_access(id=123, role_id=789, 
 print(update_confirmation)
 ```
 
-### `invite(id: int, role_id: int, user_emails: list, user_reason: str = None) -> dict`
+### `invite(id: int, role_id: int, user_emails: list, user_reason: str = None) -> str`
 
-Invite users to collaborate on a review.
+Invite users to collaborate on a review. Rayyan emails each invitee and creates accounts for emails it doesn't know.
 
 - `id` (type: int): The review identifier.
 - `role_id` (type: int): The role to grant: 2 Collaborator, 3 Viewer, 4 Translator, 5 Administrator, 6 Reviewer.
 - `user_emails` (type: list): List of user emails to invite.
-- `user_reason` (type: str, optional): The reason for inviting users. It is stored on accounts created by the invitation.
+- `user_reason` (type: str, optional): A message included in the invitation email to each invitee. It is also saved as the sign-up reason on accounts the invitation creates.
 
-**Returns**: A dictionary confirming the invitation.
+**Returns**: An empty string on success. Raises `requests.HTTPError` if the request is rejected (invalid role or emails, invitation limit reached, team seats full).
 
 **Example**:
 
 ```python
-invite_confirmation = review_access_instance.invite(id=123, role_id=6, user_emails=["user3@example.com"], user_reason="Collaboration on data analysis.")
-print(invite_confirmation)
+review_access_instance.invite(id=123, role_id=6, user_emails=["user3@example.com"], user_reason="Join our benchmark review.")
 ```
 
 ### `revoke(id: int, user_id: int) -> dict`

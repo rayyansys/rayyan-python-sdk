@@ -50,7 +50,8 @@ class BaseRequest:
         if response.status_code == 401 and retry_callable:
             if self._allow_refresh:
                 self._refresh_credentials()
-            return retry_callable()
+            # Parse the retried response like any other, without retrying again.
+            return self._handle_response(retry_callable())
 
         if "application/json" in response.headers.get("Content-Type", ""):
             data = response.json()
@@ -138,6 +139,8 @@ class StatefulRequest(BaseRequest):
         )
 
         def retry():
+            # The token may have just been refreshed.
+            headers["Authorization"] = f"Bearer {self._access_token}"
             return self.session.request(
                 method, req_url, headers=headers, params=params, data=data, files=files
             )
@@ -174,6 +177,8 @@ class StatelessRequest(BaseRequest):
         )
 
         def retry():
+            # The token may have just been refreshed.
+            headers["Authorization"] = f"Bearer {self._access_token}"
             return request(
                 method, req_url, headers=headers, params=params, data=data, files=files
             )

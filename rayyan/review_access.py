@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from .paths import REVIEWS_ROUTE
 
@@ -30,7 +30,11 @@ class ReviewAccess:
         role_id: int,
         user_emails: list,
         user_reason: Optional[str] = None,
-    ) -> dict:
+    ) -> Union[dict, str]:
+        """Invite users to a review. Returns "" on success; raises HTTPError if rejected.
+
+        `user_reason` is included in the invitation email sent to every invitee.
+        """
         payload = {
             "role_id": role_id,
             "user_emails": user_emails,
