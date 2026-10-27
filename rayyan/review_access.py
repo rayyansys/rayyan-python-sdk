@@ -1,3 +1,5 @@
+from typing import Optional, Union
+
 from .paths import REVIEWS_ROUTE
 
 from rayyan.types import RayyanProtocol as Rayyan
@@ -27,16 +29,22 @@ class ReviewAccess:
         id: int,
         role_id: int,
         user_emails: list,
-        user_reason: str,
-    ) -> dict:
+        user_reason: Optional[str] = None,
+    ) -> Union[dict, str]:
+        """Invite users to a review. Returns "" on success; raises HTTPError if rejected.
+
+        `user_reason` is included in the invitation email sent to every invitee.
+        """
+        payload = {
+            "role_id": role_id,
+            "user_emails": user_emails,
+        }
+        if user_reason is not None:
+            payload["user_reason"] = user_reason
         return self.__rayyan__.request.request_handler(
             method="POST",
             path=f"{REVIEWS_ROUTE}/{id}/invite",
-            payload={
-                "role_id": role_id,
-                "user_emails": user_emails,
-                "user_reason": user_reason,
-            },
+            payload=payload,
         )
 
     def revoke(

@@ -1,6 +1,5 @@
-import os
 import re
-import requests
+
 from rayyan.types import RayyanProtocol as Rayyan
 
 
@@ -72,27 +71,6 @@ class MyLib:
             path=path
         )
 
-    def upload_file(self, path: str, local_file_path: str) -> dict:
-        """Upload a local file to My Library using a presigned URL."""
-        if not path:
-            raise ValueError("File path cannot be empty.")
-        path = self._normalize_path(path)
-
-        presigned_url, fields = self.get_presigned_url(path)
-        if not presigned_url or not fields:
-            raise RuntimeError("Empty presigned URL response.")
-
-        with open(local_file_path, "rb") as f:
-            files = {"file": (os.path.basename(local_file_path), f)}
-            response = requests.post(presigned_url, data=fields, files=files, timeout=4)
-            if not response.ok:
-                raise RuntimeError(f"Upload failed: {response.status_code} {response.text}")
-
-        return {
-            "message": f"File '{path}' uploaded successfully.",
-            "upload_response": response.text
-        }
-
     def copy_or_move_file(self, path: str, new_path: str, move: bool = False) -> dict:
         """Copy or move a file/directory in My Library."""
         if not path or not new_path:
@@ -114,15 +92,6 @@ class MyLib:
             "destination": new_path,
             "api_response": api_response
         }
-
-    def get_presigned_url(self, path: str) -> tuple[str, dict]:
-        """Get a presigned URL and fields for uploading a file."""
-        resp = self.__rayyan__.request.request_handler(
-            method="POST",
-            path=path,
-            headers={"accept": "application/json"}
-        )
-        return resp.get("url"), resp.get("fields")
 
     def _normalize_path(self, path: str) -> str:
         """Normalize a path: collapse slashes, remove trailing slash, ensure leading slash."""

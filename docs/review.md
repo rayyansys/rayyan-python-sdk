@@ -81,17 +81,32 @@ print(created_review)
 ### Export Review
 
 ```python
-def export(self, id: int) -> Dict[str, str]:
+def export(self, review_id: int, export_format: str, filters: Optional[ExportFilters] = None) -> Dict[str, Any]:
 ```
 
-Export the content of a review by ID.
+Start an export of a review in one of the formats `csv`, `ris`, `bib` or `enw`.
+
+The export runs in the background. The call returns `{"status": "OK"}` once the job is queued, not the exported content. When the job finishes, the file appears in the user's My Library and the user receives an email with a link to it.
+
+`filters` (optional) controls what the export contains. Each flag takes `0` or `1`:
+
+| Filter | Effect |
+|---|---|
+| `author_format` | `"lf"` (Last, First) or `"fl"` (First Last) |
+| `include_abstracts`, `include_decisions`, `include_labels`, `include_exclusion_reasons`, `include_user_notes`, `include_fulltexts`, `include_questions` | Include that information for your own account |
+| `all_decisions`, `all_labels`, `all_notes` | Include decisions, labels or notes from every reviewer, not just your own |
+| `include_exclusion_reasons_col` | Put exclusion reasons in their own column per user. Only works together with `all_decisions` |
+| `include_fields` | List of CSV columns to keep, e.g. `["key", "title", "year", "authors", "doi"]` |
 
 **Example:**
 
 ```python
-review_id = 789
-exported_content = review_instance.export(review_id)
-print(exported_content)
+result = review_instance.export(
+    789,
+    "csv",
+    filters={"all_decisions": 1, "include_exclusion_reasons_col": 1, "author_format": "fl"},
+)
+print(result)  # {"status": "OK"}; the file arrives in My Library later
 ```
 
 ### Copy Review
@@ -307,15 +322,51 @@ print(unarchive_result)
 ### Blind Review
 
 ```python
-def blind(self, id: int) -> Dict[str, str]:
+def blind(self, id: int) -> Dict[str, Any]:
 ```
 
-Blind a review.
+Toggle blind mode on a review. Each call flips the current state and returns the new value as a boolean, e.g. `{"is_blind": True}`. Works on archived reviews too.
 
 **Example:**
 
 ```python
 review_id = 123
 blind_result = review_instance.blind(review_id)
-print(blind_result)
+print(blind_result)  # {"is_blind": True}
+```
+
+### Set Blind Mode
+
+```python
+def set_blind(self, id: int, enabled: bool) -> Dict[str, Any]:
+```
+
+Turn blind mode on (`enabled=True`) or off. Unlike `blind()`, it reads the review first and only toggles when the state differs. Returns `{"is_blind": bool, "changed": bool}`.
+
+- It is safe to retry, but not safe to run concurrently: two simultaneous calls can both read the old state and both toggle it.
+- It raises `TypeError` if `enabled` is not a bool, so strings such as `"false"` are rejected rather than toggling the review.
+- It raises `rayyan.errors.ReviewNotLiveError` on an archived review, because reading an archived review fails. Unarchive it first; `blind()` itself still works on archived reviews.
+
+**Example:**
+
+```python
+result = review_instance.set_blind(123, enabled=False)
+print(result)  # {"is_blind": False, "changed": True}
+```
+
+### Create AI Screener
+
+```python
+def create_ai_screener(self, review_id: int, extra: Dict[str, Any], ai_model_name: Optional[str] = None) -> Dict[str, Any]:
+```
+
+Start an AI screener job on a review. `extra` holds the article filters, in the same form as other review filters.
+
+`ai_model_name` (optional) picks the screener model, e.g. `"gpt-4.1-mini"`; leave it out to use the default model. The accepted names are listed in `LlmBotsLoader::SUPPORTED_MODELS` in rayyan-ruby. Rayyan returns 400 if the model is unsupported, or if the `ai_screener_model_change` feature is not enabled for the user.
+
+**Example:**
+
+```python
+result = review_instance.create_ai_screener(123, extra={}, ai_model_name="gpt-4.1-mini")
+print(result)
 ```
