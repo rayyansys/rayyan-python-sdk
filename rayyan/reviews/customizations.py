@@ -94,13 +94,16 @@ class ReviewCustomizations:
 
         When ``stage_id`` is given, the customization is scoped to that stage (so
         the decision is recorded for the stage rather than at the review level).
+
+        The parameters are sent in the JSON request body, so the number of
+        article IDs is not limited by the URL length.
         """
         if isinstance(article_ids, (list, tuple)):
             article_ids = ", ".join(str(article_id) for article_id in article_ids)
-        params: Dict[str, Any] = {"key": key, "value": value, "article_ids": article_ids}
+        payload: Dict[str, Any] = {"key": key, "value": value, "article_ids": article_ids}
         if stage_id is not None:
-            params["scope"] = stage_scope(stage_id)
-        return self._request("POST", f"{REVIEWS_ROUTE}/{id}/customize", params=params)
+            payload["scope"] = stage_scope(stage_id)
+        return self._request("POST", f"{REVIEWS_ROUTE}/{id}/customize", payload=payload)
 
     def _set_customization(
         self,
