@@ -55,7 +55,7 @@ class ReviewCustomizations:
         article_id: int,
         stage_id: Any,
         question_id: Any,
-        answer: Union[str, List[str]],
+        answer: Union[str, Dict[str, Any], List[Union[str, Dict[str, Any]]]],
         key: str = "included",
         allow_string_value: bool = True,
     ) -> Dict[str, Any]:
@@ -66,9 +66,14 @@ class ReviewCustomizations:
         ``answer`` is the value (or list of values) to record; it is encoded into
         the ``plan`` payload the API expects, i.e.
         ``{key: '[{"text": <value>}, ...]'}``.
+
+        An answer may also be a dict answer item (e.g. ``{"text": ..., "source_excerpt":
+        ..., "pages": [...]}``) to store the supporting evidence with the text; dicts are
+        sent as given. This replaces the question's existing answers for the article.
         """
-        answers = [answer] if isinstance(answer, str) else list(answer)
-        plan = {key: json.dumps([{"text": a} for a in answers])}
+        answers = answer if isinstance(answer, (list, tuple)) else [answer]
+        items = [{"text": a} if isinstance(a, str) else dict(a) for a in answers]
+        plan = {key: json.dumps(items)}
         return self.customize(
             id=id,
             article_id=article_id,

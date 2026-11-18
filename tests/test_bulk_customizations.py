@@ -33,3 +33,35 @@ def test_returns_api_response(client, mocked):
     mocked.post(CUSTOMIZE, json={"customization_ids": [10, 11], "missed_etags": {}, "new_etags": {}})
     assert Review(client).bulk_customizations(7, "included", 1, [1, 2]) == {
         "customization_ids": [10, 11], "missed_etags": {}, "new_etags": {}}
+
+
+# --- answer_question -----------------------------------------------------------------
+
+ANSWER_SCOPE = "__SYSTEM__STAGE__3__QUESTION__9"
+
+
+def _answer_call(client, mocked, answer):
+    import json
+    mocked.post(CUSTOMIZE, json={})
+    Review(client).answer_question(7, 42, 3, 9, answer)
+    sent = body(mocked.calls[0])
+    assert sent["article_id"] == 42 and sent["scope"] == ANSWER_SCOPE and sent["allow_string_value"] is True
+    return json.loads(sent["plan"]["included"])
+
+
+def test_answer_string_unchanged_from_rc18(client, mocked):
+    assert _answer_call(client, mocked, "PD") == [{"text": "PD"}]
+
+
+def test_answer_list_of_strings_unchanged_from_rc18(client, mocked):
+    assert _answer_call(client, mocked, ["a", "b"]) == [{"text": "a"}, {"text": "b"}]
+
+
+def test_answer_item_with_evidence(client, mocked):
+    item = {"text": "RCT", "source_excerpt": "a randomised trial", "pages": [2, 3]}
+    assert _answer_call(client, mocked, item) == [item]
+
+
+def test_answer_mixed_list(client, mocked):
+    item = {"id": "x1", "text": "n=42", "pages": [4]}
+    assert _answer_call(client, mocked, ["USA", item]) == [{"text": "USA"}, item]
