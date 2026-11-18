@@ -199,7 +199,7 @@ print(review_articles)
 def bulk_customizations(self,id: int,key: str,value: int,article_ids: str,) -> Dict[str, str]:
 ```
 
-Apply bulk customizations to a review for specified article types.
+Apply bulk customizations to a review for specified article types. `article_ids` can be a list or a comma-separated string. The parameters are sent in the request body, so large ID lists are not limited by the URL length.
 
 **Example:**
 
