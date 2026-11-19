@@ -139,6 +139,8 @@ def results(self, id: int, params: dict) -> Dict[str, str]:
 
 Retrieve the results of a review based on specified parameters.
 
+Since 1.0rc19 this is sent with the `SEARCH` method and the parameters are form-encoded in the request body, so long filters such as `extra[article_ids][]` are not limited by the URL length.
+
 **Example:**
 
 ```python

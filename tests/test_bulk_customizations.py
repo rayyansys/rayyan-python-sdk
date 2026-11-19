@@ -65,3 +65,36 @@ def test_answer_item_with_evidence(client, mocked):
 def test_answer_mixed_list(client, mocked):
     item = {"id": "x1", "text": "n=42", "pages": [4]}
     assert _answer_call(client, mocked, ["USA", item]) == [{"text": "USA"}, item]
+
+
+# --- label / reason removal (1.0rc19) ------------------------------------------------
+
+def test_label_removal_is_one_bulk_request(client, mocked):
+    mocked.post(CUSTOMIZE, json={"customization_ids": []})
+    ids = list(range(1, 5001))
+    Review(client).set_label(7, ids, "Pilot", -1)
+    assert len(mocked.calls) == 1
+    assert body(mocked.calls[0]) == {"key": "Pilot", "value": -1, "article_ids": ", ".join(map(str, ids))}
+
+
+def test_reason_removal_is_one_bulk_request(client, mocked):
+    mocked.post(CUSTOMIZE, json={"customization_ids": []})
+    Review(client).set_reason(7, [1, 2], "wrong population", -1)
+    assert len(mocked.calls) == 1
+    assert body(mocked.calls[0]) == {"key": "__EXR__wrong population", "value": -1, "article_ids": "1, 2"}
+
+
+# --- results (1.0rc19) ---------------------------------------------------------------
+
+def test_results_uses_search_with_form_body(client, mocked):
+    from urllib.parse import parse_qs
+    mocked.add("SEARCH", f"{BASE}/api/v1/reviews/7/results", json={"data": []})
+    ids = list(range(1, 3001))
+    Review(client).results(7, {"start": 0, "length": 25, "extra[article_ids][]": ids})
+    req = mocked.calls[0].request
+    assert req.method == "SEARCH"
+    assert urlsplit(req.url).query == ""
+    assert req.headers["Content-Type"] == "application/x-www-form-urlencoded"
+    form = parse_qs(req.body)
+    assert form["start"] == ["0"] and form["length"] == ["25"]
+    assert form["extra[article_ids][]"] == [str(i) for i in ids]

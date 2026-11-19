@@ -22,13 +22,6 @@ def stage_question_answer_key(stage_id: Any, question_id: Any) -> str:
     return f"{stage_scope(stage_id)}__QUESTION__{question_id}"
 
 
-def _to_article_ids_list(article_ids: Union[str, List[Any]]) -> List[Any]:
-    """Normalize article IDs (list/tuple or comma-separated string) to a list."""
-    if isinstance(article_ids, (list, tuple)):
-        return list(article_ids)
-    return [part.strip() for part in str(article_ids).split(",") if part.strip()]
-
-
 class ReviewCustomizations:
     def customize(
         self,
@@ -116,26 +109,19 @@ class ReviewCustomizations:
         article_ids: Union[str, List[Any]],
         key: str,
         value: int,
-    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    ) -> Dict[str, Any]:
         """Add or remove a keyed customization (label/reason) on articles.
 
-        This sets the given ``key`` to ``value``.
-        Adding uses the bulk endpoint (``{article_ids, key, value}``) in a single
-        request. Removing uses the per-article ``plan`` form
-        (``{article_id, plan: {key: value}}``) applied to each article, since the
-        remove flow is not a bulk operation on the API.
+        Both directions use the bulk endpoint (``{article_ids, key, value}``) in a
+        single request: the API deletes the customization when ``value`` is
+        ``REMOVE_VALUE`` (-1) and inserts it otherwise.
         """
-        if value > REMOVE_VALUE:
-            return self.bulk_customizations(
-                id=id,
-                key=key,
-                value=value,
-                article_ids=article_ids,
-            )
-        return [
-            self.customize(id=id, article_id=article_id, plan={key: value})
-            for article_id in _to_article_ids_list(article_ids)
-        ]
+        return self.bulk_customizations(
+            id=id,
+            key=key,
+            value=value,
+            article_ids=article_ids,
+        )
 
     def set_label(
         self,
@@ -143,7 +129,7 @@ class ReviewCustomizations:
         article_ids: Union[str, List[Any]],
         label: str,
         value: int = 1,
-    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    ) -> Dict[str, Any]:
         """Add or remove a label on one or more articles.
 
         ``label`` is the label name, used as the customization ``key``. ``value``
@@ -163,7 +149,7 @@ class ReviewCustomizations:
         article_ids: Union[str, List[Any]],
         reason: str,
         value: int = 1,
-    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    ) -> Dict[str, Any]:
         """Add or remove an exclusion reason on one or more articles.
 
         ``reason`` is the reason text; it is namespaced with
