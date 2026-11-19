@@ -22,13 +22,6 @@ def stage_question_answer_key(stage_id: Any, question_id: Any) -> str:
     return f"{stage_scope(stage_id)}__QUESTION__{question_id}"
 
 
-def _to_article_ids_list(article_ids: Union[str, List[Any]]) -> List[Any]:
-    """Normalize article IDs (list/tuple or comma-separated string) to a list."""
-    if isinstance(article_ids, (list, tuple)):
-        return list(article_ids)
-    return [part.strip() for part in str(article_ids).split(",") if part.strip()]
-
-
 class ReviewCustomizations:
     def customize(
         self,
@@ -55,7 +48,7 @@ class ReviewCustomizations:
         article_id: int,
         stage_id: Any,
         question_id: Any,
-        answer: Union[str, List[str]],
+        answer: Union[str, Dict[str, Any], List[Union[str, Dict[str, Any]]]],
         key: str = "included",
         allow_string_value: bool = True,
     ) -> Dict[str, Any]:
@@ -66,9 +59,14 @@ class ReviewCustomizations:
         ``answer`` is the value (or list of values) to record; it is encoded into
         the ``plan`` payload the API expects, i.e.
         ``{key: '[{"text": <value>}, ...]'}``.
+
+        An answer may also be a dict answer item (e.g. ``{"text": ..., "source_excerpt":
+        ..., "pages": [...]}``) to store the supporting evidence with the text; dicts are
+        sent as given. This replaces the question's existing answers for the article.
         """
-        answers = [answer] if isinstance(answer, str) else list(answer)
-        plan = {key: json.dumps([{"text": a} for a in answers])}
+        answers = answer if isinstance(answer, (list, tuple)) else [answer]
+        items = [{"text": a} if isinstance(a, str) else dict(a) for a in answers]
+        plan = {key: json.dumps(items)}
         return self.customize(
             id=id,
             article_id=article_id,
@@ -94,13 +92,16 @@ class ReviewCustomizations:
 
         When ``stage_id`` is given, the customization is scoped to that stage (so
         the decision is recorded for the stage rather than at the review level).
+
+        The parameters are sent in the JSON request body, so the number of
+        article IDs is not limited by the URL length.
         """
         if isinstance(article_ids, (list, tuple)):
             article_ids = ", ".join(str(article_id) for article_id in article_ids)
-        params: Dict[str, Any] = {"key": key, "value": value, "article_ids": article_ids}
+        payload: Dict[str, Any] = {"key": key, "value": value, "article_ids": article_ids}
         if stage_id is not None:
-            params["scope"] = stage_scope(stage_id)
-        return self._request("POST", f"{REVIEWS_ROUTE}/{id}/customize", params=params)
+            payload["scope"] = stage_scope(stage_id)
+        return self._request("POST", f"{REVIEWS_ROUTE}/{id}/customize", payload=payload)
 
     def _set_customization(
         self,
@@ -108,26 +109,19 @@ class ReviewCustomizations:
         article_ids: Union[str, List[Any]],
         key: str,
         value: int,
-    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    ) -> Dict[str, Any]:
         """Add or remove a keyed customization (label/reason) on articles.
 
-        This sets the given ``key`` to ``value``.
-        Adding uses the bulk endpoint (``{article_ids, key, value}``) in a single
-        request. Removing uses the per-article ``plan`` form
-        (``{article_id, plan: {key: value}}``) applied to each article, since the
-        remove flow is not a bulk operation on the API.
+        Both directions use the bulk endpoint (``{article_ids, key, value}``) in a
+        single request: the API deletes the customization when ``value`` is
+        ``REMOVE_VALUE`` (-1) and inserts it otherwise.
         """
-        if value > REMOVE_VALUE:
-            return self.bulk_customizations(
-                id=id,
-                key=key,
-                value=value,
-                article_ids=article_ids,
-            )
-        return [
-            self.customize(id=id, article_id=article_id, plan={key: value})
-            for article_id in _to_article_ids_list(article_ids)
-        ]
+        return self.bulk_customizations(
+            id=id,
+            key=key,
+            value=value,
+            article_ids=article_ids,
+        )
 
     def set_label(
         self,
@@ -135,7 +129,7 @@ class ReviewCustomizations:
         article_ids: Union[str, List[Any]],
         label: str,
         value: int = 1,
-    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    ) -> Dict[str, Any]:
         """Add or remove a label on one or more articles.
 
         ``label`` is the label name, used as the customization ``key``. ``value``
@@ -155,7 +149,7 @@ class ReviewCustomizations:
         article_ids: Union[str, List[Any]],
         reason: str,
         value: int = 1,
-    ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    ) -> Dict[str, Any]:
         """Add or remove an exclusion reason on one or more articles.
 
         ``reason`` is the reason text; it is namespaced with

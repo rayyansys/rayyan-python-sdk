@@ -7,8 +7,16 @@ class ReviewArticles:
         return self._request("POST", f"{REVIEWS_ROUTE}/{id}/copy", payload={"review": review})
 
     def results(self, id: int, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        params = params or {}
-        return self._request("GET", f"{REVIEWS_ROUTE}/{id}/results", params=params)
+        """List a review's articles with filters, sorting and pagination.
+
+        Sent with the SEARCH method and the parameters form-encoded in the request
+        body, so long filters (e.g. ``extra[article_ids][]``) are not limited by
+        the URL length. Keys use the bracket form (``extra[mode]``), which the API
+        parses into nested parameters.
+        """
+        return self._request(
+            "SEARCH", f"{REVIEWS_ROUTE}/{id}/results", payload=params or {}, body_type="form"
+        )
 
     def list_articles_with_fulltext(self, review_id: int) -> Dict[str, Any]:
         return self.results(id=review_id, params={"extra[fulltext_types][]": "pr"})
